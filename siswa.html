@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Ujian Siswa - CBT SMKN 1 Klaten | @ER/DKV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col no-select" oncontextmenu="return false;">
+
+  <!-- ==================== 1. LOGIN KHUSUS SISWA ==================== -->
+  <div id="view-login" class="flex-1 flex flex-col justify-center items-center p-4 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden border border-slate-200">
+      <div class="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white text-center">
+        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
+          <i data-lucide="graduation-cap" class="w-9 h-9 text-white"></i>
+        </div>
+        <h1 class="text-xl font-bold tracking-tight">PORTAL UJIAN SISWA</h1>
+        <p class="text-xs text-blue-100 mt-1">CBT Online SMK Negeri 1 Klaten</p>
+      </div>
+
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Username Peserta</label>
+          <input id="login-username" type="text" placeholder="Contoh: siswa01" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Password</label>
+          <input id="login-password" type="password" placeholder="Masukkan password" onkeydown="if(event.key==='Enter') handleStudentLogin()" class="w-full px-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-600 focus:outline-none text-sm">
+        </div>
+        <button onclick="handleStudentLogin()" id="btn-login" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
+          <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Ruang Ujian
+        </button>
+
+        <div class="pt-3 border-t border-slate-100 flex justify-between text-[11px] text-slate-400">
+          <a href="guru.html" class="hover:text-blue-600">Portal Guru →</a>
+          <a href="admin.html" class="hover:text-indigo-600">Portal Admin →</a>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 px-6 py-3 text-center border-t border-slate-200 text-xs font-medium text-slate-500">
+        Copyright &copy; 2026 SMKN 1 Klaten — <span class="font-bold text-indigo-600">@ER/DKV</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. RUANG TUNGGU & LEMBAR UJIAN SISWA ==================== -->
+  <div id="view-student" class="hidden flex-1 flex flex-col min-h-screen">
+    <!-- Header Ujian Siswa -->
+    <header class="bg-[#0f172a] text-white px-6 py-3.5 flex flex-wrap items-center justify-between gap-4 shadow-md">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center font-bold text-sm">CBT</div>
+        <div>
+          <div class="font-bold text-sm">SMKN 1 KLATEN — LEMBAR UJIAN SISWA</div>
+          <div id="student-identity-bar" class="text-xs text-slate-300">Peserta</div>
+        </div>
+      </div>
+
+      <div id="exam-status-bar" class="hidden flex items-center gap-3">
+        <div class="bg-rose-950/80 border border-rose-500/40 px-3 py-1.5 rounded-lg text-xs">
+          Pelanggaran: <span id="student-violation-count" class="font-bold text-rose-400">0/3</span>
+        </div>
+        <div class="bg-slate-800 border border-slate-700 px-4 py-1.5 rounded-lg text-sm font-mono font-bold text-amber-400 flex items-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4"></i> <span id="exam-timer-display">00:00</span>
+        </div>
+      </div>
+
+      <button id="btn-student-logout" onclick="logoutStudent()" class="text-xs bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg border border-slate-700">Keluar</button>
+    </header>
+
+    <!-- Sub-View 2A: Konfirmasi Token -->
+    <div id="student-lobby" class="flex-1 flex items-center justify-center p-6">
+      <div class="bg-white rounded-2xl shadow-lg border border-slate-200 max-w-lg w-full p-6 space-y-5">
+        <div class="border-b pb-3">
+          <h3 class="text-lg font-bold text-slate-800">Konfirmasi Token Ujian</h3>
+          <p class="text-xs text-slate-500 mt-1">Masukkan Token Ujian aktif (Tahap 1: Pilihan Ganda atau Tahap 2: Esai) yang diberikan oleh Pengawas.</p>
+        </div>
+
+        <div class="bg-amber-50 border border-amber-200 p-3.5 rounded-xl text-xs text-amber-900 space-y-1">
+          <div class="font-bold">Peraturan Sistem Anti-Curang (Anti-Cheat):</div>
+          <div>1. Ujian wajib dijalankan dalam mode <b>Layar Penuh (Fullscreen)</b>.</div>
+          <div>2. Dilarang berpindah tab browser, membuka aplikasi lain, atau split-screen.</div>
+          <div>3. Klik kanan, Copy-Paste, dan pintasan keyboard dinonaktifkan sepenuhnya.</div>
+          <div>4. Melampaui batas maksimal pelanggaran akan mengunci dan mengirim ujian secara otomatis.</div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Kode Token Ujian</label>
+          <input id="input-exam-token" type="text" placeholder="Contoh: DKV1A" class="w-full px-4 py-3 text-center text-lg font-mono font-bold uppercase tracking-widest border-2 border-indigo-300 rounded-xl focus:border-indigo-600 focus:outline-none">
+        </div>
+
+        <button onclick="verifyAndStartExam()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow transition">
+          Mulai Kerjakan Ujian (Layar Penuh)
+        </button>
+      </div>
+    </div>
+
+    <!-- Sub-View 2B: Lembar Pengerjaan Soal -->
+    <div id="student-workspace" class="hidden flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div class="lg:col-span-3 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+        <div class="space-y-5">
+          <div class="flex items-center justify-between border-b pb-3">
+            <span id="q-number-badge" class="bg-indigo-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg">SOAL NO. 1</span>
+            <span id="q-stage-badge" class="text-xs font-semibold text-slate-500">Tahap 1 - Pilihan Ganda</span>
+          </div>
+
+          <div id="q-display-text" class="text-sm md:text-base text-slate-800 leading-relaxed whitespace-pre-line font-medium"></div>
+          <div id="q-display-images" class="flex flex-wrap gap-3"></div>
+
+          <div id="q-options-container" class="space-y-3 pt-2"></div>
+
+          <div id="q-essay-container" class="hidden pt-2">
+            <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Lembar Jawaban Uraian (Fitur Paste Dinonaktifkan):</label>
+            <textarea id="essay-answer-box" rows="7"
+              onpaste="return false;" oncopy="return false;" oncut="return false;"
+              oninput="saveCurrentEssayAnswer(this.value)"
+              placeholder="Ketik jawaban uraian Anda secara mandiri di sini..."
+              class="w-full p-4 rounded-xl border-2 border-slate-300 focus:border-indigo-600 focus:outline-none text-sm"></textarea>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between border-t pt-5 mt-6">
+          <button onclick="navigateQuestion(-1)" id="btn-prev-q" class="px-4 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold hover:bg-slate-100">← Soal Sebelumnya</button>
+          <button onclick="navigateQuestion(1)" id="btn-next-q" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold">Soal Selanjutnya →</button>
+          <button onclick="confirmSubmitExam(false)" id="btn-finish-exam" class="hidden px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold">Selesai & Kirim Jawaban</button>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 h-fit space-y-4">
+        <h4 class="font-bold text-xs uppercase text-slate-500 tracking-wider">Navigasi Nomor Soal</h4>
+        <div id="q-nav-grid" class="grid grid-cols-5 gap-2"></div>
+        <div class="pt-4 border-t space-y-2 text-[11px] text-slate-500">
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-emerald-600 inline-block"></span> Sudah Dijawab</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-indigo-600 inline-block"></span> Sedang Dikerjakan</div>
+          <div class="flex items-center gap-2"><span class="w-3 h-3 rounded bg-slate-200 inline-block"></span> Belum Dijawab</div>
+        </div>
+        <button onclick="confirmSubmitExam(false)" class="w-full mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 rounded-xl shadow">
+          Kumpulkan Ujian Sekarang
+        </button>
+      </div>
+    </div>
+
+    <footer class="bg-white border-t border-slate-200 px-6 py-3 text-center text-xs text-slate-500 mt-auto">
+      CBT & Monitoring Ujian Online SMKN 1 Klaten &bull; Hak Cipta <span class="font-bold text-indigo-600">@ER/DKV</span>
+    </footer>
+  </div>
+
+  <!-- MODAL LIGHTBOX ZOOM GAMBAR -->
+  <div id="lightbox-modal" onclick="closeLightbox()" class="hidden fixed inset-0 z-50 bg-black/85 flex items-center justify-center p-4 cursor-zoom-out">
+    <div class="max-w-4xl max-h-[90vh] relative">
+      <img id="lightbox-img" src="" alt="Zoom Gambar Soal" class="max-h-[85vh] w-auto rounded-xl shadow-2xl border border-white/20">
+      <p class="text-center text-white text-xs mt-2">Klik di mana saja untuk menutup tampilan perbesaran gambar (@ER/DKV)</p>
+    </div>
+  </div>
+
+  <script>
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
+
+    function callServer(action, payload, callback) {
+      fetch(GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: action, payload: payload })
+      })
+      .then(r => r.json())
+      .then(data => { if (callback) callback(data); })
+      .catch(err => {
+        console.error(err);
+        Swal.fire('Gangguan Koneksi', 'Gagal menghubungi server ujian.', 'error');
+      });
+    }
+
+    let currentUser = null;
+    let activeExam = null;
+    let examQuestions = [];
+    let currentQIndex = 0;
+    let studentAnswers = {};
+    let remainingSeconds = 0;
+    let examTimerInterval = null;
+    let isExamActive = false;
+    let lastViolationTimestamp = 0;
+    let antiCheatInitialized = false;
+
+    window.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+
+    function handleStudentLogin() {
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value.trim();
+      if (!username || !password) {
+        Swal.fire('Perhatian', 'Masukkan Username dan Password Anda!', 'warning');
+        return;
+      }
+      const btn = document.getElementById('btn-login');
+      btn.disabled = true;
+      btn.innerText = 'Memverifikasi...';
+
+      callServer('loginUser', { username, password }, res => {
+        btn.disabled = false;
+        btn.innerText = 'Masuk Ruang Ujian';
+        if (!res || !res.success) {
+          Swal.fire('Gagal Masuk', (res && res.message) ? res.message : 'Login gagal', 'error');
+          return;
+        }
+        if (res.user.peran !== 'Siswa') {
+          Swal.fire('Bukan Akun Siswa', 'Akun ini adalah akun ' + res.user.peran + '. Silakan masuk melalui Portal Guru atau Admin.', 'info');
+          return;
+        }
+        currentUser = res.user;
+        document.getElementById('view-login').classList.add('hidden');
+        document.getElementById('view-student').classList.remove('hidden');
+        document.getElementById('student-identity-bar').innerText = `${currentUser.nama} — Kelas ${currentUser.kelas}`;
+        lucide.createIcons();
+      });
+    }
+
+    function logoutStudent() {
+      if (isExamActive) {
+        Swal.fire('Ujian Berlangsung', 'Kumpulkan ujian terlebih dahulu sebelum keluar!', 'warning');
+        return;
+      }
+      currentUser = null;
+      document.getElementById('view-student').classList.add('hidden');
+      document.getElementById('view-login').classList.remove('hidden');
+    }
+
+    function verifyAndStartExam() {
+      const kodeToken = document.getElementById('input-exam-token').value.trim();
+      if (!kodeToken) {
+        Swal.fire('Token Kosong', 'Masukkan Kode Token Ujian!', 'warning');
+        return;
+      }
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+
+      callServer('startStudentExam', { username: currentUser.username, kodeToken }, res => {
+        if (!res || !res.success) {
+          Swal.fire('Tidak Dapat Memulai', res ? res.message : 'Gagal memuat soal', 'error');
+          return;
+        }
+        activeExam = res.session;
+        examQuestions = res.questions;
+        currentQIndex = 0;
+
+        const savedAns = localStorage.getItem(`CBT_ANS_${activeExam.idSesi}`);
+        studentAnswers = savedAns ? JSON.parse(savedAns) : {};
+        const savedTime = localStorage.getItem(`CBT_TIME_${activeExam.idSesi}`);
+        remainingSeconds = savedTime ? parseInt(savedTime, 10) : activeExam.durasiDetik;
+
+        document.getElementById('student-lobby').classList.add('hidden');
+        document.getElementById('btn-student-logout').classList.add('hidden');
+        document.getElementById('exam-status-bar').classList.remove('hidden');
+        document.getElementById('student-workspace').classList.remove('hidden');
+
+        updateViolationBadge();
+        renderQuestionView();
+        startExamCountdown();
+        activateAntiCheatListeners();
+      });
+    }
+
+    function renderQuestionView() {
+      const q = examQuestions[currentQIndex];
+      document.getElementById('q-number-badge').innerText = `SOAL NO. ${currentQIndex + 1} DARI ${examQuestions.length}`;
+      document.getElementById('q-stage-badge').innerText = `${activeExam.namaMapel} • ${activeExam.tahap} (${q.jenis})`;
+      document.getElementById('q-display-text').innerText = q.pertanyaan || '';
+
+      const imgContainer = document.getElementById('q-display-images');
+      imgContainer.innerHTML = '';
+      if (q.gambarSoal) {
+        q.gambarSoal.split(',').map(u => u.trim()).filter(Boolean).forEach(url => {
+          imgContainer.innerHTML += `
+            <div class="relative group">
+              <img src="${url}" onclick="openLightbox('${url}')" class="max-h-64 rounded-xl border border-slate-300 shadow-sm cursor-zoom-in hover:opacity-95 transition" alt="Gambar Soal">
+              <span class="text-[10px] bg-black/70 text-white px-2 py-0.5 rounded absolute bottom-2 right-2 pointer-events-none">Klik untuk Zoom</span>
+            </div>
+          `;
+        });
+      }
+
+      const optBox = document.getElementById('q-options-container');
+      const essayBox = document.getElementById('q-essay-container');
+
+      if (q.jenis === 'PG') {
+        optBox.classList.remove('hidden');
+        essayBox.classList.add('hidden');
+        const letters = ['A', 'B', 'C', 'D', 'E'];
+        optBox.innerHTML = letters.map(letter => {
+          const textOpt = q['opsi' + letter];
+          const imgOpt = q['gambar' + letter];
+          if (!textOpt && !imgOpt) return '';
+          const isSelected = studentAnswers[q.idSoal] === letter;
+          return `
+            <div onclick="selectMultipleChoice('${q.idSoal}', '${letter}')"
+              class="p-3.5 rounded-xl border-2 cursor-pointer transition flex items-start gap-3 ${isSelected ? 'border-indigo-600 bg-indigo-50/70' : 'border-slate-200 hover:border-slate-300'}">
+              <div class="w-7 h-7 rounded-lg font-bold text-xs flex items-center justify-center shrink-0 ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700'}">${letter}</div>
+              <div class="space-y-2 flex-1">
+                ${textOpt ? `<div class="text-sm text-slate-800">${textOpt}</div>` : ''}
+                ${imgOpt ? `<img src="${imgOpt.split(',')[0].trim()}" onclick="event.stopPropagation(); openLightbox('${imgOpt.split(',')[0].trim()}')" class="max-h-40 rounded-lg border border-slate-300 cursor-zoom-in" alt="Gambar Opsi ${letter}">` : ''}
+              </div>
+            </div>
+          `;
+        }).join('');
+      } else {
+        optBox.classList.add('hidden');
+        essayBox.classList.remove('hidden');
+        document.getElementById('essay-answer-box').value = studentAnswers[q.idSoal] || '';
+      }
+
+      document.getElementById('btn-prev-q').disabled = (currentQIndex === 0);
+      const isLast = (currentQIndex === examQuestions.length - 1);
+      document.getElementById('btn-next-q').classList.toggle('hidden', isLast);
+      document.getElementById('btn-finish-exam').classList.toggle('hidden', !isLast);
+
+      renderQuestionNavGrid();
+    }
+
+    function selectMultipleChoice(idSoal, letter) {
+      studentAnswers[idSoal] = letter;
+      localStorage.setItem(`CBT_ANS_${activeExam.idSesi}`, JSON.stringify(studentAnswers));
+      renderQuestionView();
+    }
+
+    function saveCurrentEssayAnswer(val) {
+      const q = examQuestions[currentQIndex];
+      studentAnswers[q.idSoal] = val;
+      localStorage.setItem(`CBT_ANS_${activeExam.idSesi}`, JSON.stringify(studentAnswers));
+      renderQuestionNavGrid();
+    }
+
+    function navigateQuestion(step) {
+      const nextIdx = currentQIndex + step;
+      if (nextIdx >= 0 && nextIdx < examQuestions.length) {
+        currentQIndex = nextIdx;
+        renderQuestionView();
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      currentQIndex = idx;
+      renderQuestionView();
+    }
+
+    function renderQuestionNavGrid() {
+      const grid = document.getElementById('q-nav-grid');
+      grid.innerHTML = examQuestions.map((q, idx) => {
+        const answered = studentAnswers[q.idSoal] && String(studentAnswers[q.idSoal]).trim() !== '';
+        let cls = 'bg-slate-200 text-slate-700';
+        if (idx === currentQIndex) cls = 'bg-indigo-600 text-white ring-2 ring-indigo-300';
+        else if (answered) cls = 'bg-emerald-600 text-white';
+        return `<button onclick="jumpToQuestion(${idx})" class="h-9 rounded-lg font-bold text-xs transition ${cls}">${idx + 1}</button>`;
+      }).join('');
+    }
+
+    function openLightbox(url) {
+      document.getElementById('lightbox-img').src = url;
+      document.getElementById('lightbox-modal').classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox-modal').classList.add('hidden');
+    }
+
+    function startExamCountdown() {
+      isExamActive = true;
+      clearInterval(examTimerInterval);
+      examTimerInterval = setInterval(() => {
+        remainingSeconds--;
+        localStorage.setItem(`CBT_TIME_${activeExam.idSesi}`, remainingSeconds);
+
+        const mins = Math.floor(remainingSeconds / 60);
+        const secs = remainingSeconds % 60;
+        document.getElementById('exam-timer-display').innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+        if (remainingSeconds % 30 === 0) {
+          const answeredCount = Object.keys(studentAnswers).filter(k => String(studentAnswers[k]).trim() !== '').length;
+          callServer('updateExamProgress', {
+            idSesi: activeExam.idSesi,
+            progresStr: `${answeredCount}/${examQuestions.length}`,
+            sisaWaktuStr: `${mins} Menit`
+          });
+        }
+
+        if (remainingSeconds <= 0) {
+          clearInterval(examTimerInterval);
+          Swal.fire('Waktu Habis!', 'Jawaban Anda sedang dikirim secara otomatis.', 'info');
+          executeSubmitExam(false);
+        }
+      }, 1000);
+    }
+
+    function activateAntiCheatListeners() {
+      if (antiCheatInitialized) return;
+      antiCheatInitialized = true;
+
+      document.addEventListener('visibilitychange', () => {
+        if (isExamActive && document.hidden) triggerViolation('Berpindah Tab Browser / Minimize Aplikasi');
+      });
+
+      window.addEventListener('blur', () => {
+        if (isExamActive) triggerViolation('Keluar Fokus Jendela Ujian / Split-Screen');
+      });
+
+      document.addEventListener('fullscreenchange', () => {
+        if (isExamActive && !document.fullscreenElement) triggerViolation('Keluar dari Mode Layar Penuh (Fullscreen)');
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (!isExamActive) return;
+        if ((e.ctrlKey && ['c', 'v', 'x', 'u', 'p', 's'].includes(e.key.toLowerCase())) || e.key === 'PrintScreen' || e.key === 'F12') {
+          e.preventDefault();
+          triggerViolation(`Menekan Pintasan Keyboard Terlarang (${e.key})`);
+        }
+      });
+    }
+
+    function triggerViolation(reason) {
+      const now = Date.now();
+      if (now - lastViolationTimestamp < 2500) return;
+      lastViolationTimestamp = now;
+
+      activeExam.jumlahPelanggaran++;
+      updateViolationBadge();
+
+      callServer('recordViolation', { idSesi: activeExam.idSesi, jenisPelanggaran: reason }, res => {
+        if (res && res.count >= activeExam.batasPelanggaran) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Ujian Dikunci Otomatis!',
+            text: `Anda telah melakukan pelanggaran sebanyak ${res.count} kali (${reason}). Sistem mengunci dan mengirim jawaban Anda sekarang.`,
+            allowOutsideClick: false
+          }).then(() => executeSubmitExam(true));
+        } else {
+          Swal.fire({
+            icon: 'warning',
+            title: `Peringatan Anti-Cheat (${activeExam.jumlahPelanggaran}/${activeExam.batasPelanggaran})`,
+            text: `Terdeteksi: ${reason}. Jika mencapai ${activeExam.batasPelanggaran} kali, ujian akan dikunci otomatis!`,
+            confirmButtonText: 'Kembali ke Layar Penuh'
+          }).then(() => {
+            if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+          });
+        }
+      });
+    }
+
+    function updateViolationBadge() {
+      document.getElementById('student-violation-count').innerText = `${activeExam.jumlahPelanggaran}/${activeExam.batasPelanggaran}`;
+    }
+
+    function confirmSubmitExam(isAutoLocked) {
+      Swal.fire({
+        title: 'Kumpulkan Jawaban Ujian?',
+        text: 'Pastikan seluruh soal telah diperiksa sebelum dikirim ke server.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Kirim Sekarang',
+        cancelButtonText: 'Periksa Kembali'
+      }).then(res => {
+        if (res.isConfirmed) executeSubmitExam(isAutoLocked);
+      });
+    }
+
+    function executeSubmitExam(isAutoLocked) {
+      isExamActive = false;
+      clearInterval(examTimerInterval);
+      if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+
+      Swal.fire({ title: 'Memproses Nilai di Server...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+      callServer('submitExamAnswers', {
+        idSesi: activeExam.idSesi,
+        answersObj: studentAnswers,
+        isAutoLocked: isAutoLocked
+      }, res => {
+        localStorage.removeItem(`CBT_ANS_${activeExam.idSesi}`);
+        localStorage.removeItem(`CBT_TIME_${activeExam.idSesi}`);
+
+        if (res.tahap === 'Tahap 1') {
+          Swal.fire({
+            icon: 'success',
+            title: `Skor Tahap 1 Anda: ${res.skorPG}`,
+            text: res.message,
+            confirmButtonText: 'Kembali ke Beranda Siswa'
+          }).then(() => resetStudentToLobby());
+        } else {
+          Swal.fire({
+            icon: 'info',
+            title: 'Tahap 2 (Esai) Terkirim',
+            text: res.message,
+            confirmButtonText: 'Selesai'
+          }).then(() => resetStudentToLobby());
+        }
+      });
+    }
+
+    function resetStudentToLobby() {
+      document.getElementById('student-workspace').classList.add('hidden');
+      document.getElementById('exam-status-bar').classList.add('hidden');
+      document.getElementById('btn-student-logout').classList.remove('hidden');
+      document.getElementById('student-lobby').classList.remove('hidden');
+      document.getElementById('input-exam-token').value = '';
+    }
+  </script>
+</body>
+</html>
