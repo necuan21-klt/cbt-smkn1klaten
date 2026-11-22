@@ -14,112 +14,166 @@
     .tab-aktif { background-color: #1e293b; color: #38bdf8; border-left: 4px solid #38bdf8; }
   </style>
 </head>
-<body class="min-h-screen flex">
+<body class="min-h-screen flex flex-col">
 
-  <!-- SIDEBAR -->
-  <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
-    <div class="p-5 border-b border-slate-800 flex items-center gap-3">
-      <div class="w-10 h-10 rounded bg-teal-500 flex items-center justify-center text-white font-bold">GR</div>
-      <div>
-        <div class="text-white font-bold text-sm">PORTAL GURU</div>
-        <div class="text-xs text-slate-400">@ER/DKV - SMKN 1 Klaten</div>
+  <!-- LOGIN GURU -->
+  <div id="view-login" class="flex-1 flex items-center justify-center p-4 bg-slate-900 h-screen">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden">
+      <div class="p-6 bg-teal-600 text-white text-center">
+        <i data-lucide="book-open-check" class="w-10 h-10 mx-auto mb-2 text-teal-200"></i>
+        <h1 class="text-xl font-bold">PORTAL GURU</h1>
+        <p class="text-xs text-teal-100">SMK Negeri 1 Klaten</p>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-1">Username Guru</label>
+          <input id="login-username" type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-500 mb-1">Password</label>
+          <input id="login-password" type="password" onkeydown="if(event.key==='Enter') loginGuru()" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-teal-500 outline-none text-sm">
+        </div>
+        <button onclick="loginGuru()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 rounded-lg transition">Masuk Dashboard</button>
       </div>
     </div>
-    <nav class="p-3 space-y-2 mt-4 text-sm font-medium">
-      <button onclick="bukaTab('pantauan')" id="nav-pantauan" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 tab-aktif"><i data-lucide="activity" class="w-4 h-4"></i> Live Pantauan</button>
-      <button onclick="bukaTab('soal')" id="nav-soal" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="file-edit" class="w-4 h-4"></i> Input Soal Cepat</button>
-      <button onclick="bukaTab('token')" id="nav-token" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="key" class="w-4 h-4"></i> Manajemen Token</button>
-      <button onclick="bukaTab('nilai')" id="nav-nilai" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="award" class="w-4 h-4"></i> Rekap Nilai</button>
-    </nav>
-  </aside>
+  </div>
 
-  <!-- KONTEN UTAMA -->
-  <main class="flex-1 flex flex-col h-screen overflow-hidden">
-    <header class="bg-white px-6 py-4 border-b border-slate-200 flex justify-between items-center shrink-0">
-      <h2 class="font-bold text-lg text-slate-800" id="judul-halaman">Live Pantauan Ujian</h2>
-      <button onclick="refreshData()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-sm font-bold rounded-lg text-slate-600 flex items-center gap-2">
-        <i data-lucide="refresh-cw" class="w-4 h-4"></i> Segarkan Data
-      </button>
-    </header>
-
-    <div class="flex-1 p-6 overflow-y-auto">
-      
-      <!-- TAB PANTAUAN -->
-      <div id="tab-pantauan" class="space-y-6">
-        <div class="grid grid-cols-3 gap-4">
-          <div class="bg-white p-5 rounded-xl border shadow-sm"><div class="text-xs font-bold text-slate-400">SEDANG UJIAN</div><div class="text-2xl font-bold text-blue-600" id="stat-aktif">0</div></div>
-          <div class="bg-white p-5 rounded-xl border shadow-sm"><div class="text-xs font-bold text-slate-400">SELESAI</div><div class="text-2xl font-bold text-green-600" id="stat-selesai">0</div></div>
-          <div class="bg-white p-5 rounded-xl border border-red-200 shadow-sm bg-red-50"><div class="text-xs font-bold text-red-400">PELANGGARAN HARI INI</div><div class="text-2xl font-bold text-red-600" id="stat-curang">0</div></div>
-        </div>
-        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Siswa</th><th class="p-4">Kelas</th><th class="p-4">Mapel</th><th class="p-4">Progres</th><th class="p-4">Pelanggaran</th></thead>
-            <tbody id="tabel-live" class="divide-y divide-slate-100"></tbody>
-          </table>
+  <!-- DASHBOARD GURU -->
+  <div id="view-guru" class="hidden flex-1 flex h-screen overflow-hidden">
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+      <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded bg-teal-500 flex items-center justify-center text-white font-bold">GR</div>
+        <div>
+          <div class="text-white font-bold text-sm" id="nama-guru-header">GURU</div>
+          <div class="text-xs text-slate-400">@ER/DKV</div>
         </div>
       </div>
+      <nav class="p-3 space-y-2 mt-4 text-sm font-medium">
+        <button onclick="bukaTab('pantauan')" id="nav-pantauan" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 tab-aktif"><i data-lucide="activity" class="w-4 h-4"></i> Live Pantauan</button>
+        <button onclick="bukaTab('impor')" id="nav-impor" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-blue-400"><i data-lucide="file-text" class="w-4 h-4"></i> Impor Docs (Baru)</button>
+        <button onclick="bukaTab('soal')" id="nav-soal" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="file-edit" class="w-4 h-4"></i> Input Soal Manual</button>
+        <button onclick="bukaTab('token')" id="nav-token" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="key" class="w-4 h-4"></i> Manajemen Token</button>
+        <button onclick="bukaTab('nilai')" id="nav-nilai" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800"><i data-lucide="award" class="w-4 h-4"></i> Rekap Nilai</button>
+      </nav>
+      <button onclick="logoutGuru()" class="mt-auto m-4 bg-red-900/50 hover:bg-red-900 text-red-400 py-2 rounded-lg text-sm font-bold">Keluar</button>
+    </aside>
 
-      <!-- TAB SOAL (SANGAT DISEDERHANAKAN) -->
-      <div id="tab-soal" class="hidden space-y-6">
-        <div class="bg-white rounded-xl border shadow-sm p-6">
-          <h3 class="font-bold mb-4">Input Soal Pilihan Ganda</h3>
-          <div class="grid grid-cols-2 gap-4 mb-4">
-            <div><label class="text-xs font-bold text-slate-500">Mata Pelajaran (Cth: Videografi)</label><input id="form-mapel" class="w-full border p-2 rounded text-sm mt-1"></div>
-            <div><label class="text-xs font-bold text-slate-500">Kelas Target (Cth: XII DKV 1)</label><input id="form-kelas" value="XII DKV 1" class="w-full border p-2 rounded text-sm mt-1"></div>
-          </div>
-          <textarea id="form-tanya" placeholder="Ketik pertanyaan di sini..." class="w-full border p-3 rounded mb-3 text-sm h-24"></textarea>
-          <div class="grid grid-cols-2 gap-3 mb-4">
-            <input id="form-a" placeholder="Opsi A" class="border p-2 rounded text-sm"><input id="form-b" placeholder="Opsi B" class="border p-2 rounded text-sm">
-            <input id="form-c" placeholder="Opsi C" class="border p-2 rounded text-sm"><input id="form-d" placeholder="Opsi D" class="border p-2 rounded text-sm">
-            <input id="form-e" placeholder="Opsi E (Opsional)" class="border p-2 rounded text-sm col-span-2">
-          </div>
-          <div class="flex gap-4 items-end">
-            <div class="w-1/3"><label class="text-xs font-bold text-slate-500">Kunci Jawaban</label>
-              <select id="form-kunci" class="w-full border p-2 rounded text-sm font-bold mt-1"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select>
-            </div>
-            <button onclick="simpanSoal()" class="w-2/3 bg-teal-600 text-white font-bold py-2 rounded shadow">Simpan Soal ke Bank</button>
-          </div>
-        </div>
+    <!-- KONTEN UTAMA -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+      <header class="bg-white px-6 py-4 border-b border-slate-200 flex justify-between items-center shrink-0">
+        <h2 class="font-bold text-lg text-slate-800" id="judul-halaman">Live Pantauan Ujian</h2>
+        <button onclick="refreshData()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-sm font-bold rounded-lg text-slate-600 flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i> Segarkan Data
+        </button>
+      </header>
+
+      <div class="flex-1 p-6 overflow-y-auto">
         
-        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-          <div class="p-4 bg-slate-50 border-b font-bold text-sm flex justify-between">Daftar Soal Tersimpan <button onclick="hapusSemuaSoal()" class="text-xs text-red-600 bg-red-100 px-3 py-1 rounded">Hapus Semua</button></div>
-          <table class="w-full text-left text-sm"><tbody id="tabel-soal" class="divide-y"></tbody></table>
-        </div>
-      </div>
-
-      <!-- TAB TOKEN -->
-      <div id="tab-token" class="hidden space-y-6">
-        <div class="bg-white rounded-xl border shadow-sm p-6 flex gap-4 items-end">
-          <div class="w-1/3"><label class="text-xs font-bold text-slate-500 block mb-1">Mata Pelajaran Ujian</label><input id="token-mapel" placeholder="Videografi" class="w-full border p-2 rounded text-sm"></div>
-          <div class="w-1/3"><label class="text-xs font-bold text-slate-500 block mb-1">Durasi (Menit)</label><input id="token-durasi" type="number" value="60" class="w-full border p-2 rounded text-sm"></div>
-          <button onclick="buatToken()" class="w-1/3 bg-blue-600 text-white font-bold py-2 rounded shadow">Generate Token</button>
-        </div>
-        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Token Aktif</th><th class="p-4">Mapel</th><th class="p-4">Durasi</th><th class="p-4">Aksi</th></thead>
-            <tbody id="tabel-token" class="divide-y divide-slate-100"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- TAB NILAI -->
-      <div id="tab-nilai" class="hidden space-y-6">
-        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-          <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
-            <span class="font-bold text-sm">Rekap Nilai Siswa</span>
+        <!-- TAB PANTAUAN -->
+        <div id="tab-pantauan" class="space-y-6">
+          <div class="grid grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-xl border shadow-sm"><div class="text-xs font-bold text-slate-400">SEDANG UJIAN</div><div class="text-2xl font-bold text-blue-600" id="stat-aktif">0</div></div>
+            <div class="bg-white p-5 rounded-xl border shadow-sm"><div class="text-xs font-bold text-slate-400">SELESAI</div><div class="text-2xl font-bold text-green-600" id="stat-selesai">0</div></div>
+            <div class="bg-white p-5 rounded-xl border border-red-200 shadow-sm bg-red-50"><div class="text-xs font-bold text-red-400">PELANGGARAN</div><div class="text-2xl font-bold text-red-600" id="stat-curang">0</div></div>
           </div>
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Nama Siswa</th><th class="p-4">Kelas</th><th class="p-4">Mapel</th><th class="p-4 text-center">Skor PG</th><th class="p-4 text-center">Pelanggaran</th></thead>
-            <tbody id="tabel-nilai" class="divide-y divide-slate-100"></tbody>
-          </table>
+          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Siswa</th><th class="p-4">Kelas</th><th class="p-4">Mapel</th><th class="p-4">Progres</th><th class="p-4">Pelanggaran</th></thead>
+              <tbody id="tabel-live" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
         </div>
-      </div>
 
-    </div>
-  </main>
+        <!-- TAB IMPOR DOCS -->
+        <div id="tab-impor" class="hidden space-y-6">
+          <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-sm space-y-5">
+            <div class="border-b pb-4">
+              <h3 class="text-base font-bold text-slate-800">Impor Soal & Gambar dari Google Docs</h3>
+              <p class="text-xs text-slate-500 mt-1">Sistem akan mengekstrak tag [SOAL], [KUNCI], opsi A-E, dan semua gambar di dalamnya secara otomatis.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="md:col-span-3">
+                <label class="block text-xs font-bold text-slate-700 mb-1">URL Dokumen Google Docs</label>
+                <input id="import-doc-url" type="text" placeholder="https://docs.google.com/document/d/..." class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Mata Pelajaran</label>
+                <input id="import-mapel" type="text" placeholder="Cth: Videografi" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none focus:border-blue-500">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Target Kelas</label>
+                <input id="import-kelas" type="text" value="XII DKV 1" class="w-full px-4 py-2.5 border border-slate-300 rounded-lg text-sm outline-none focus:border-blue-500">
+              </div>
+              <div class="flex items-end">
+                <button onclick="runDocImport()" id="btn-import-doc" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm shadow transition">Mulai Ekstrak Soal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB INPUT MANUAL -->
+        <div id="tab-soal" class="hidden space-y-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6">
+            <h3 class="font-bold mb-4">Input Soal Manual (Teks Saja)</h3>
+            <div class="grid grid-cols-2 gap-4 mb-4">
+              <div><label class="text-xs font-bold text-slate-500">Mata Pelajaran</label><input id="form-mapel" class="w-full border p-2 rounded text-sm mt-1"></div>
+              <div><label class="text-xs font-bold text-slate-500">Kelas Target</label><input id="form-kelas" value="XII DKV 1" class="w-full border p-2 rounded text-sm mt-1"></div>
+            </div>
+            <textarea id="form-tanya" placeholder="Ketik pertanyaan di sini..." class="w-full border p-3 rounded mb-3 text-sm h-24"></textarea>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <input id="form-a" placeholder="Opsi A" class="border p-2 rounded text-sm"><input id="form-b" placeholder="Opsi B" class="border p-2 rounded text-sm">
+              <input id="form-c" placeholder="Opsi C" class="border p-2 rounded text-sm"><input id="form-d" placeholder="Opsi D" class="border p-2 rounded text-sm">
+              <input id="form-e" placeholder="Opsi E (Opsional)" class="border p-2 rounded text-sm col-span-2">
+            </div>
+            <div class="flex gap-4 items-end">
+              <div class="w-1/3"><label class="text-xs font-bold text-slate-500">Kunci Jawaban</label>
+                <select id="form-kunci" class="w-full border p-2 rounded text-sm font-bold mt-1"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select>
+              </div>
+              <button onclick="simpanSoal()" class="w-2/3 bg-teal-600 text-white font-bold py-2 rounded shadow">Simpan Manual</button>
+            </div>
+          </div>
+          
+          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <div class="p-4 bg-slate-50 border-b font-bold text-sm flex justify-between">Daftar Soal Tersimpan <button onclick="hapusSemuaSoal()" class="text-xs text-red-600 bg-red-100 px-3 py-1 rounded">Hapus Semua</button></div>
+            <table class="w-full text-left text-sm"><tbody id="tabel-soal" class="divide-y"></tbody></table>
+          </div>
+        </div>
+
+        <!-- TAB TOKEN -->
+        <div id="tab-token" class="hidden space-y-6">
+          <div class="bg-white rounded-xl border shadow-sm p-6 flex gap-4 items-end">
+            <div class="w-1/3"><label class="text-xs font-bold text-slate-500 block mb-1">Mata Pelajaran Ujian</label><input id="token-mapel" placeholder="Videografi" class="w-full border p-2 rounded text-sm"></div>
+            <div class="w-1/3"><label class="text-xs font-bold text-slate-500 block mb-1">Durasi (Menit)</label><input id="token-durasi" type="number" value="60" class="w-full border p-2 rounded text-sm"></div>
+            <button onclick="buatToken()" class="w-1/3 bg-blue-600 text-white font-bold py-2 rounded shadow">Generate Token</button>
+          </div>
+          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Token Aktif</th><th class="p-4">Mapel</th><th class="p-4">Durasi</th><th class="p-4">Aksi</th></thead>
+              <tbody id="tabel-token" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- TAB NILAI -->
+        <div id="tab-nilai" class="hidden space-y-6">
+          <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <div class="p-4 bg-slate-50 border-b flex justify-between items-center">
+              <span class="font-bold text-sm">Rekap Nilai Siswa</span>
+            </div>
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Nama Siswa</th><th class="p-4">Kelas</th><th class="p-4">Mapel</th><th class="p-4 text-center">Skor PG</th><th class="p-4 text-center">Pelanggaran</th></thead>
+              <tbody id="tabel-nilai" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
 
   <script>
-    // --- KONFIGURASI API ---
+    // --- GANTI DENGAN URL WEB APP TERBARU ---
     const API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
     lucide.createIcons();
 
@@ -128,22 +182,39 @@
       .then(r => r.json()).then(res => { if(callback) callback(res); });
     }
 
+    function loginGuru() {
+      const u = document.getElementById('login-username').value, p = document.getElementById('login-password').value;
+      if (!u || !p) return;
+      callAPI('loginGuru', { u, p }, res => {
+        if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
+        document.getElementById('view-login').classList.add('hidden');
+        document.getElementById('view-guru').classList.remove('hidden');
+        document.getElementById('nama-guru-header').innerText = res.data.nama;
+        refreshData();
+      });
+    }
+    
+    function logoutGuru() {
+      document.getElementById('view-guru').classList.add('hidden');
+      document.getElementById('view-login').classList.remove('hidden');
+      document.getElementById('login-password').value = '';
+    }
+
     function bukaTab(id) {
-      ['pantauan', 'soal', 'token', 'nilai'].forEach(t => {
+      ['pantauan', 'impor', 'soal', 'token', 'nilai'].forEach(t => {
         document.getElementById('tab-' + t).classList.add('hidden');
         document.getElementById('nav-' + t).classList.remove('tab-aktif');
       });
       document.getElementById('tab-' + id).classList.remove('hidden');
       document.getElementById('nav-' + id).classList.add('tab-aktif');
       
-      const judul = { 'pantauan':'Live Pantauan', 'soal':'Input Soal Cepat', 'token':'Manajemen Token', 'nilai':'Rekap Nilai Siswa' };
+      const judul = { 'pantauan':'Live Pantauan', 'impor':'Impor Soal Google Docs', 'soal':'Input Soal Manual', 'token':'Manajemen Token', 'nilai':'Rekap Nilai Siswa' };
       document.getElementById('judul-halaman').innerText = judul[id];
-      refreshData();
+      if (id !== 'impor') refreshData();
     }
 
     function refreshData() {
       callAPI('getDashboardGuru', {}, data => {
-        // Render Pantauan
         document.getElementById('stat-aktif').innerText = data.aktif.length;
         document.getElementById('stat-selesai').innerText = data.selesai.length;
         document.getElementById('stat-curang').innerText = data.pelanggaran;
@@ -152,31 +223,46 @@
           `<tr><td class="p-4 font-bold">${s.nama}</td><td class="p-4">${s.kelas}</td><td class="p-4">${s.mapel}</td><td class="p-4 font-mono">${s.progres}</td><td class="p-4 font-bold text-red-600">${s.pelanggaran}x</td></tr>`
         ).join('') || `<tr><td colspan="5" class="p-8 text-center text-slate-400">Tidak ada ujian aktif</td></tr>`;
 
-        // Render Soal
         document.getElementById('tabel-soal').innerHTML = data.soal.map(s => 
           `<tr><td class="p-4"><b>[${s.mapel}]</b> ${s.tanya}<div class="text-xs text-slate-400 mt-1">Kunci: ${s.kunci}</div></td></tr>`
         ).join('') || `<tr><td class="p-8 text-center text-slate-400">Bank soal kosong</td></tr>`;
 
-        // Render Token
         document.getElementById('tabel-token').innerHTML = data.token.map(t => 
           `<tr><td class="p-4 font-mono font-bold text-blue-600 text-lg">${t.kode}</td><td class="p-4">${t.mapel}</td><td class="p-4">${t.durasi} Menit</td><td class="p-4"><button onclick="hapusToken('${t.kode}')" class="text-red-600 text-xs bg-red-50 px-2 py-1 rounded">Tutup Token</button></td></tr>`
         ).join('') || `<tr><td colspan="4" class="p-8 text-center text-slate-400">Tidak ada token aktif</td></tr>`;
 
-        // Render Nilai
         document.getElementById('tabel-nilai').innerHTML = data.nilai.map(n => 
           `<tr><td class="p-4 font-bold">${n.nama}</td><td class="p-4">${n.kelas}</td><td class="p-4">${n.mapel}</td><td class="p-4 text-center font-bold text-green-600 text-lg">${n.skor}</td><td class="p-4 text-center">${n.pelanggaran}x</td></tr>`
         ).join('') || `<tr><td colspan="5" class="p-8 text-center text-slate-400">Belum ada nilai masuk</td></tr>`;
       });
     }
 
+    function runDocImport() {
+      const docUrl = document.getElementById('import-doc-url').value.trim();
+      const mapel = document.getElementById('import-mapel').value.trim();
+      const kelas = document.getElementById('import-kelas').value.trim();
+      
+      if (!docUrl || !mapel) return Swal.fire('Error', 'URL Docs dan Mata Pelajaran wajib diisi!', 'warning');
+      
+      const btn = document.getElementById('btn-import-doc');
+      btn.disabled = true; btn.innerText = 'Mengekstrak Gambar & Soal... (Mohon Tunggu)';
+      
+      callAPI('importQuestionsFromDoc', { docUrl, mapel, kelas }, res => {
+        btn.disabled = false; btn.innerText = 'Mulai Ekstrak Soal';
+        if (res.success) {
+          Swal.fire('Berhasil Impor', res.msg, 'success');
+          document.getElementById('import-doc-url').value = '';
+          bukaTab('soal');
+        } else {
+          Swal.fire('Gagal', res.msg, 'error');
+        }
+      });
+    }
+
     function simpanSoal() {
       const q = {
-        mapel: document.getElementById('form-mapel').value,
-        kelas: document.getElementById('form-kelas').value,
-        tanya: document.getElementById('form-tanya').value,
-        opsiA: document.getElementById('form-a').value, opsiB: document.getElementById('form-b').value,
-        opsiC: document.getElementById('form-c').value, opsiD: document.getElementById('form-d').value,
-        opsiE: document.getElementById('form-e').value, kunci: document.getElementById('form-kunci').value
+        mapel: document.getElementById('form-mapel').value, kelas: document.getElementById('form-kelas').value, tanya: document.getElementById('form-tanya').value,
+        opsiA: document.getElementById('form-a').value, opsiB: document.getElementById('form-b').value, opsiC: document.getElementById('form-c').value, opsiD: document.getElementById('form-d').value, opsiE: document.getElementById('form-e').value, kunci: document.getElementById('form-kunci').value
       };
       if(!q.mapel || !q.tanya || !q.opsiA) return Swal.fire('Error', 'Lengkapi mapel, pertanyaan & minimal 2 opsi', 'error');
       
@@ -192,17 +278,13 @@
       const mapel = document.getElementById('token-mapel').value;
       const durasi = document.getElementById('token-durasi').value;
       if(!mapel) return Swal.fire('Error', 'Isi Mata Pelajaran', 'error');
-      callAPI('buatToken', { mapel, durasi }, res => {
-        Swal.fire('Token Dirilis', res.kode, 'success'); refreshData();
-      });
+      callAPI('buatToken', { mapel, durasi }, res => { Swal.fire('Token Dirilis', res.kode, 'success'); refreshData(); });
     }
 
     function hapusToken(kode) { callAPI('hapusToken', { kode }, () => refreshData()); }
     function hapusSemuaSoal() { if(confirm('Yakin hapus semua soal?')) callAPI('hapusSemuaSoal', {}, () => refreshData()); }
 
-    // Start auto-refresh for active dashboard
-    setInterval(() => { if(!document.hidden && document.getElementById('tab-pantauan').classList.contains('hidden') === false) refreshData(); }, 10000);
-    window.onload = refreshData;
+    setInterval(() => { if(!document.hidden && document.getElementById('view-guru').classList.contains('hidden') === false && document.getElementById('tab-pantauan').classList.contains('hidden') === false) refreshData(); }, 10000);
   </script>
 </body>
 </html>
