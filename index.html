@@ -41,8 +41,9 @@
   <!-- HEADER -->
   <header class="w-full px-6 py-6 flex items-center justify-between z-10 relative">
     <div class="flex items-center gap-4">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-teal-400 flex items-center justify-center font-black text-sm shadow-[0_0_20px_rgba(59,130,246,0.3)]">
-        ER
+      <!-- Menggunakan File Gambar Logo -->
+      <div class="w-11 h-11 rounded-xl overflow-hidden flex items-center justify-center shadow-[0_0_20px_rgba(59,130,246,0.3)] bg-white/5 border border-white/10">
+        <img src="emoji.png" alt="Logo" class="w-full h-full object-cover">
       </div>
       <div>
         <h1 class="font-bold text-sm tracking-widest uppercase text-slate-200">SMK Negeri 1 Klaten</h1>
@@ -118,23 +119,14 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="w-full px-6 py-6 flex items-center justify-between text-[10px] font-semibold text-slate-500 tracking-wider z-10">
+  <footer class="w-full px-6 py-6 flex flex-col sm:flex-row items-center justify-between text-[10px] font-semibold text-slate-500 tracking-wider z-10 gap-4">
     <div>&copy; 2026 CBT SMKN 1 KLATEN</div>
-    <div>DESIGNED BY <span class="text-slate-300">@ER/DKV</span></div>
+    <div class="flex items-center gap-2">
+      <!-- PINTU RAHASIA GURU (Ikon Lingkaran Kecil) -->
+      <a href="guru.html" title="Akses Guru" class="w-2.5 h-2.5 rounded-full bg-slate-500 hover:bg-teal-400 transition-colors cursor-pointer opacity-40 hover:opacity-100"></a>
+      <div>DESIGNED BY <span class="text-slate-300">@ER/DKV</span></div>
+    </div>
   </footer>
-
-  <!-- =========================================================================
-       SECRET GURU PORTAL LINK 
-       Disembunyikan di sudut kanan bawah dengan opasitas sangat rendah.
-       ========================================================================= -->
-  <a href="guru.html" title="Akses Admin" class="fixed bottom-4 right-4 z-50 p-3 opacity-10 hover:opacity-100 transition-opacity duration-300 rounded-full hover:bg-white/10 cursor-pointer">
-    <!-- Custom Minimalist Shield SVG -->
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg" class="text-slate-400 hover:text-teal-400">
-      <path d="M12 22S19 18 19 11V5L12 2L5 5V11C5 18 12 22 12 22Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="12" cy="10" r="2" stroke-width="2"/>
-      <path d="M12 12V16" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-  </a>
 
   <!-- ==================== SKRIP CEK KONEKSI ==================== -->
   <script>
