@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerbang Utama CBT & Monitoring Ujian - SMKN 1 Klaten | @ER/DKV</title>
+  <title>CBT & Monitoring Ujian - SMKN 1 Klaten</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
@@ -19,43 +19,43 @@
 <body class="bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-900 text-white min-h-screen flex flex-col justify-between select-none">
 
   <!-- ==================== HEADER ATAS ==================== -->
-  <header class="w-full max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4 border-b border-white/10">
+  <header class="w-full max-w-5xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4 border-b border-white/10">
     <div class="flex items-center gap-3">
       <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-extrabold text-lg shadow-lg shadow-blue-500/20 border border-white/20">
         CBT
       </div>
       <div>
         <h1 class="font-bold text-base tracking-tight text-white">SMK NEGERI 1 KLATEN</h1>
-        <p class="text-xs text-slate-400">Sistem Ujian Online 2 Tahap & Monitoring Terpadu</p>
+        <p class="text-xs text-slate-400">Sistem Ujian Ringan & Anti-Contek</p>
       </div>
     </div>
 
-    <!-- Indikator Koneksi Server Google Apps Script -->
+    <!-- Indikator Koneksi Server -->
     <div class="flex items-center gap-3 bg-slate-900/80 border border-white/10 px-4 py-2 rounded-full text-xs">
       <span id="server-dot" class="w-2.5 h-2.5 rounded-full bg-amber-400 status-dot"></span>
       <span id="server-status-text" class="text-slate-300 font-medium">Memeriksa koneksi server...</span>
     </div>
   </header>
 
-  <!-- ==================== KONTEN UTAMA (3 PILIHAN PORTAL) ==================== -->
-  <main class="flex-1 flex flex-col justify-center items-center px-6 py-10 max-w-6xl mx-auto w-full">
+  <!-- ==================== KONTEN UTAMA (2 PILIHAN PORTAL) ==================== -->
+  <main class="flex-1 flex flex-col justify-center items-center px-6 py-10 max-w-5xl mx-auto w-full">
     <div class="text-center max-w-2xl mb-10 space-y-3">
       <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-300 border border-blue-500/20">
-        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Computer Based Test (CBT) Terintegrasi
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Computer Based Test (CBT) Lite
       </span>
       <h2 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white">
         Pilih Portal Akses Anda
       </h2>
       <p class="text-xs md:text-sm text-slate-300 leading-relaxed">
-        Silakan masuk sesuai peran Anda. Pastikan peserta ujian menggunakan perangkat dengan layar penuh (*fullscreen*) dan telah menyiapkan Token Ujian dari pengawas.
+        Silakan masuk sesuai peran Anda. Sistem dilengkapi proteksi layar penuh, deteksi pindah tab, dan larangan penggunaan pintasan keyboard bagi peserta ujian.
       </p>
     </div>
 
-    <!-- Grid 3 Kartu Portal -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+    <!-- Grid 2 Kartu Portal (Diubah dari 3 agar pas untuk versi Lite) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-3xl">
 
       <!-- 1. KARTU PORTAL SISWA -->
-      <a href="siswa.html" class="group relative bg-slate-900/70 hover:bg-slate-900/95 border border-blue-500/30 hover:border-blue-400 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-600/20 flex flex-col justify-between">
+      <a href="siswa.html" class="group relative bg-slate-900/70 hover:bg-slate-900/95 border border-blue-500/30 hover:border-blue-400 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-blue-600/20 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-5">
             <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-600/30 group-hover:scale-105 transition">
@@ -70,24 +70,24 @@
             Portal Ujian Siswa
           </h3>
           <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-            Halaman pengerjaan soal Tahap 1 (Pilihan Ganda) dan Tahap 2 (Esai/Uraian) dengan pengacakan soal otomatis dan proteksi anti-curang.
+            Halaman pengerjaan soal dengan pengacakan otomatis dan proteksi anti-curang yang sensitif terhadap aktivitas tab lain.
           </p>
 
-          <ul class="mt-5 space-y-2 text-xs text-slate-300 border-t border-white/10 pt-4">
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Mode Layar Penuh Wajib</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Perbesaran (Zoom) Gambar Soal</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Skor Tahap 1 Langsung Tampil</li>
+          <ul class="mt-6 space-y-2 text-xs text-slate-300 border-t border-white/10 pt-5">
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Wajib Layar Penuh (Fullscreen)</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Deteksi Keluar Aplikasi / Split Screen</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-blue-400 shrink-0"></i> Kunci Otomatis (Maks. 3 Pelanggaran)</li>
           </ul>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-blue-400 group-hover:text-blue-300">
-          <span>Masuk Ruang Ujian Siswa</span>
+        <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-blue-400 group-hover:text-blue-300">
+          <span>Masuk Ruang Ujian</span>
           <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
         </div>
       </a>
 
       <!-- 2. KARTU PORTAL GURU -->
-      <a href="guru.html" class="group relative bg-slate-900/70 hover:bg-slate-900/95 border border-teal-500/30 hover:border-teal-400 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-teal-600/20 flex flex-col justify-between">
+      <a href="guru.html" class="group relative bg-slate-900/70 hover:bg-slate-900/95 border border-teal-500/30 hover:border-teal-400 rounded-2xl p-8 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-teal-600/20 flex flex-col justify-between">
         <div>
           <div class="flex items-center justify-between mb-5">
             <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-teal-600/30 group-hover:scale-105 transition">
@@ -99,53 +99,21 @@
           </div>
 
           <h3 class="text-xl font-bold text-white group-hover:text-teal-300 transition">
-            Portal Guru & Koreksi
+            Portal Guru & Pantauan
           </h3>
           <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-            Panel khusus Bapak/Ibu Guru untuk mengimpor soal bergambar dari Google Docs, memantau ujian kelas, serta mengoreksi jawaban esai.
+            Panel manajemen instan untuk memasukkan soal ke bank soal, merilis token ujian, dan memantau siswa secara real-time.
           </p>
 
-          <ul class="mt-5 space-y-2 text-xs text-slate-300 border-t border-white/10 pt-4">
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Impor Soal & Gambar Google Docs</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Rilis Token & Pantauan Langsung</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Koreksi Jawaban Esai (Tahap 2)</li>
+          <ul class="mt-6 space-y-2 text-xs text-slate-300 border-t border-white/10 pt-5">
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Input Soal Cepat & Sederhana</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Rilis & Tutup Token Instan</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-teal-400 shrink-0"></i> Pantauan Progres & Pelanggaran Live</li>
           </ul>
         </div>
 
-        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-teal-400 group-hover:text-teal-300">
+        <div class="mt-8 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-teal-400 group-hover:text-teal-300">
           <span>Buka Panel Guru</span>
-          <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
-        </div>
-      </a>
-
-      <!-- 3. KARTU PORTAL ADMIN -->
-      <a href="admin.html" class="group relative bg-slate-900/70 hover:bg-slate-900/95 border border-purple-500/30 hover:border-purple-400 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-purple-600/20 flex flex-col justify-between">
-        <div>
-          <div class="flex items-center justify-between mb-5">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-600/30 group-hover:scale-105 transition">
-              <i data-lucide="shield-check" class="w-7 h-7 text-white"></i>
-            </div>
-            <span class="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/30">
-              Administrator
-            </span>
-          </div>
-
-          <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition">
-            Portal Administrator
-          </h3>
-          <p class="text-xs text-slate-400 mt-2 leading-relaxed">
-            Pusat kendali penuh untuk pengelolaan seluruh data pengguna (Siswa/Guru), pengaturan mata pelajaran, batas pelanggaran, dan rekap nilai.
-          </p>
-
-          <ul class="mt-5 space-y-2 text-xs text-slate-300 border-t border-white/10 pt-4">
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-400 shrink-0"></i> Manajemen Akun Siswa & Guru</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-400 shrink-0"></i> Konfigurasi Mapel & Durasi Ujian</li>
-            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-purple-400 shrink-0"></i> Kontrol Penuh Seluruh Fitur CBT</li>
-          </ul>
-        </div>
-
-        <div class="mt-6 pt-4 border-t border-white/10 flex items-center justify-between text-xs font-bold text-purple-400 group-hover:text-purple-300">
-          <span>Buka Dashboard Admin</span>
           <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition"></i>
         </div>
       </a>
@@ -155,15 +123,16 @@
 
   <!-- ==================== FOOTER HAK CIPTA ==================== -->
   <footer class="w-full border-t border-white/10 bg-slate-950/60 py-4 px-6 text-center text-xs text-slate-400">
-    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-      <div>CBT & Monitoring Ujian Online SMK Negeri 1 Klaten</div>
-      <div>Hak Cipta &copy; 2026 — Dikembangkan oleh <span class="font-bold text-sky-400">@ER/DKV</span></div>
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <div>CBT & Monitoring Ujian Online (Versi Ringan) - SMK Negeri 1 Klaten</div>
+      <div>Hak Cipta &copy; 2026 — <span class="font-bold text-sky-400">@ER/DKV</span></div>
     </div>
   </footer>
 
-  <!-- ==================== SKRIP CEK KONEKSI SERVER GAS ==================== -->
+  <!-- ==================== SKRIP CEK KONEKSI ==================== -->
   <script>
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
+    // Wajib Samakan API URL ini dengan API URL yang Anda pasang di siswa.html & guru.html
+    const API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
 
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
@@ -174,20 +143,21 @@
       const dot = document.getElementById('server-dot');
       const txt = document.getElementById('server-status-text');
 
-      fetch(GAS_API_URL)
-        .then(r => r.json())
-        .then(data => {
-          if (data && data.status === 'OK') {
+      // Mengecek respon GET sederhana dari versi Lite Code.gs
+      fetch(API_URL)
+        .then(r => r.text())
+        .then(text => {
+          if (text.includes('Aktif')) {
             dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 status-dot';
-            txt.innerText = 'Server Database Online & Siap';
+            txt.innerText = 'Server Database Aktif & Terkoneksi';
             txt.className = 'text-emerald-300 font-semibold';
           } else {
-            throw new Error('Invalid status');
+            throw new Error('Format respon tidak sesuai');
           }
         })
         .catch(() => {
           dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
-          txt.innerText = 'Server belum merespons (Cek akses Deployment GAS)';
+          txt.innerText = 'Server belum merespons (Periksa URL Web App di Code)';
           txt.className = 'text-rose-300 font-medium';
         });
     }
