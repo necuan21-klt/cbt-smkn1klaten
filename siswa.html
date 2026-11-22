@@ -153,17 +153,32 @@
       });
     }
 
-    function renderSoal() {
+  function renderSoal() {
       const s = soalList[curIdx];
       document.getElementById('ui-nosoal').innerText = `SOAL NO. ${curIdx + 1}`;
-      document.getElementById('ui-pertanyaan').innerText = s.tanya;
       
+      // Tambahan baris untuk merender Teks dan Gambar Pertanyaan
+      let htmlTanya = `<div class="mb-4">${s.tanya}</div>`;
+      if (s.gbrSoal) {
+        s.gbrSoal.split(',').forEach(url => {
+          htmlTanya += `<img src="${url.trim()}" class="max-h-64 rounded-xl border border-slate-300 shadow-sm mb-4">`;
+        });
+      }
+      document.getElementById('ui-pertanyaan').innerHTML = htmlTanya;
+      
+      // Tambahan untuk Gambar pada Opsi A-E
       document.getElementById('ui-opsi').innerHTML = ['A','B','C','D','E'].map(opt => {
-        if (!s['opsi'+opt]) return '';
+        if (!s['opsi'+opt] && !s['gbr'+opt]) return '';
         const isSel = jawaban[s.id] === opt;
-        return `<div onclick="pilihOpsi('${s.id}', '${opt}')" class="p-3 rounded-lg border-2 cursor-pointer transition flex gap-3 ${isSel ? 'border-blue-600 bg-blue-50' : 'border-slate-200'}">
-                  <div class="w-6 h-6 rounded flex items-center justify-center text-xs font-bold ${isSel ? 'bg-blue-600 text-white' : 'bg-slate-200'}">${opt}</div>
-                  <div class="text-sm font-medium text-slate-700">${s['opsi'+opt]}</div>
+        
+        let htmlOpsi = s['opsi'+opt] ? `<div class="text-sm font-medium text-slate-700 mb-1">${s['opsi'+opt]}</div>` : '';
+        if (s['gbr'+opt]) {
+          htmlOpsi += `<img src="${s['gbr'+opt].split(',')[0].trim()}" class="max-h-40 rounded-lg border border-slate-300 mt-2">`;
+        }
+
+        return `<div onclick="pilihOpsi('${s.id}', '${opt}')" class="p-3 rounded-lg border-2 cursor-pointer transition flex items-start gap-3 ${isSel ? 'border-blue-600 bg-blue-50' : 'border-slate-200'}">
+                  <div class="w-6 h-6 rounded flex items-center justify-center shrink-0 text-xs font-bold ${isSel ? 'bg-blue-600 text-white' : 'bg-slate-200'}">${opt}</div>
+                  <div class="flex-1">${htmlOpsi}</div>
                 </div>`;
       }).join('');
 
