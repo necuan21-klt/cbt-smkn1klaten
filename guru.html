@@ -5,9 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portal Guru & Koreksi Esai - CBT SMKN 1 Klaten | @ER/DKV</title>
 
-  <!-- Tailwind CSS CDN Utama & Fallback Statis -->
+  <!-- Tailwind CSS CDN Utama -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -55,7 +54,7 @@
       <div class="p-6 space-y-4">
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Username Guru</label>
-          <input id="login-username" type="text" placeholder="Contoh: guru_dkv" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-600 focus:outline-none text-sm">
+          <input id="login-username" type="text" placeholder="Masukkan username" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-600 focus:outline-none text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold uppercase tracking-wider text-gray-500 mb-1">Password</label>
@@ -64,10 +63,6 @@
         <button onclick="handleLogin()" id="btn-login" class="w-full text-white font-semibold py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2" style="background-color: #0d9488;">
           <i data-lucide="log-in" class="w-4 h-4"></i> Masuk Portal Guru
         </button>
-
-        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200 text-xs text-gray-500">
-          Akun Demo Guru: <span class="font-mono font-bold text-gray-800">guru_dkv</span> / <span class="font-mono font-bold text-gray-800">guru123</span>
-        </div>
 
         <div class="pt-2 border-t border-gray-100 flex justify-between text-xs text-gray-400">
           <a href="index.html" class="hover:text-teal-600">← Beranda Utama</a>
@@ -296,11 +291,11 @@
             </button>
           </div>
 
-          <!-- Tabel Bank Soal dengan Fitur Koreksi (Edit), Hapus Satuan & Hapus Semua Soal -->
+          <!-- Tabel Bank Soal -->
           <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
               <div>
-                <h4 class="font-bold text-sm text-gray-800">Bank Soal Tersimpan (Koreksi & Hapus Soal)</h4>
+                <h4 class="font-bold text-sm text-gray-800">Bank Soal Tersimpan</h4>
                 <p class="text-xs text-gray-500">Klik tombol <b>Edit</b> untuk mengoreksi soal, atau klik <b>Hapus Semua Soal</b> untuk mengosongkan soal per Mapel/Tahap.</p>
               </div>
               <button onclick="openBulkDeleteModal()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow flex items-center gap-1.5">
@@ -311,14 +306,9 @@
               <table class="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr class="bg-gray-50 border-b uppercase text-gray-500">
-                    <th class="p-2.5">ID Soal</th>
-                    <th class="p-2.5">Mapel & Kelas</th>
-                    <th class="p-2.5">Tahap</th>
-                    <th class="p-2.5">Pertanyaan</th>
-                    <th class="p-2.5">Gambar</th>
-                    <th class="p-2.5">Kunci / Pedoman</th>
-                    <th class="p-2.5">Bobot</th>
-                    <th class="p-2.5 text-center">Aksi (Edit / Hapus)</th>
+                    <th class="p-2.5">ID Soal</th><th class="p-2.5">Mapel & Kelas</th><th class="p-2.5">Tahap</th>
+                    <th class="p-2.5">Pertanyaan</th><th class="p-2.5">Gambar</th><th class="p-2.5">Kunci / Pedoman</th>
+                    <th class="p-2.5">Bobot</th><th class="p-2.5 text-center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="table-bank-soal" class="divide-y"></tbody>
@@ -333,7 +323,7 @@
             <div class="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h3 class="text-base font-bold text-gray-800">Lembar Penilaian & Koreksi Jawaban Esai Siswa (Tahap 2)</h3>
-                <p class="text-xs text-gray-500">Bandingkan jawaban siswa dengan kunci pedoman, lalu masukkan nilai (0–100) pada kolom penilaian di sebelah kanan.</p>
+                <p class="text-xs text-gray-500">Bandingkan jawaban siswa dengan kunci pedoman, lalu masukkan nilai (0–100).</p>
               </div>
               <div class="flex items-center gap-2 text-xs">
                 <label class="font-bold text-gray-600">Rumus Nilai Akhir:</label>
@@ -349,12 +339,9 @@
               <table class="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr class="bg-gray-50 border-b uppercase text-gray-500">
-                    <th class="p-3">Nama Siswa & Kelas</th>
-                    <th class="p-3">Mapel</th>
-                    <th class="p-3">Pertanyaan Soal & Pedoman Kunci</th>
-                    <th class="p-3">Jawaban Uraian Siswa</th>
-                    <th class="p-3">Status</th>
-                    <th class="p-3 text-center">Kolom Nilai Esai (0-100)</th>
+                    <th class="p-3">Nama Siswa & Kelas</th><th class="p-3">Mapel</th>
+                    <th class="p-3">Pertanyaan Soal & Pedoman Kunci</th><th class="p-3">Jawaban Uraian Siswa</th>
+                    <th class="p-3">Status</th><th class="p-3 text-center">Kolom Nilai Esai (0-100)</th>
                   </tr>
                 </thead>
                 <tbody id="table-koreksi-esai" class="divide-y"></tbody>
@@ -363,17 +350,17 @@
           </div>
         </div>
 
-        <!-- ==================== TAB 5: REKAP NILAI SELURUH SISWA PER KELAS ==================== -->
+        <!-- ==================== TAB 5: REKAP NILAI SELURUH SISWA ==================== -->
         <div id="tab-rekap-kelas" class="hidden space-y-6">
           <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-5">
             <div class="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
               <div>
                 <h3 class="text-base font-bold text-gray-800">Rekap Nilai Seluruh Siswa (Dipisahkan Per Kelas)</h3>
-                <p class="text-xs text-gray-500">Pilih Kelas dan Mode Ujian (Tahap 1 Saja, Tahap 2 Saja, atau Gabungan) untuk memfinalisasi atau mengunduh rekap nilai.</p>
+                <p class="text-xs text-gray-500">Pilih Kelas dan Mode Ujian untuk memfinalisasi atau mengunduh rekap nilai.</p>
               </div>
               <div class="flex flex-wrap items-center gap-2 text-xs">
                 <button onclick="exportRekapToCSV()" class="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg flex items-center gap-1.5 shadow-sm">
-                  <i data-lucide="download" class="w-4 h-4"></i> Unduh Excel / CSV Per Kelas
+                  <i data-lucide="download" class="w-4 h-4"></i> Unduh Excel / CSV
                 </button>
               </div>
             </div>
@@ -381,15 +368,11 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200 text-xs">
               <div>
                 <label class="font-bold text-gray-600 block mb-1">1. Pilih Kelas Siswa:</label>
-                <select id="rekap-filter-kelas" onchange="renderRekapPerKelas()" class="w-full border p-2 rounded-lg bg-white font-semibold">
-                  <option value="ALL">Semua Kelas</option>
-                </select>
+                <select id="rekap-filter-kelas" onchange="renderRekapPerKelas()" class="w-full border p-2 rounded-lg bg-white font-semibold"><option value="ALL">Semua Kelas</option></select>
               </div>
               <div>
                 <label class="font-bold text-gray-600 block mb-1">2. Pilih Mata Pelajaran:</label>
-                <select id="rekap-filter-mapel" onchange="renderRekapPerKelas()" class="w-full border p-2 rounded-lg bg-white">
-                  <option value="ALL">Semua Mata Pelajaran</option>
-                </select>
+                <select id="rekap-filter-mapel" onchange="renderRekapPerKelas()" class="w-full border p-2 rounded-lg bg-white"><option value="ALL">Semua Mata Pelajaran</option></select>
               </div>
               <div>
                 <label class="font-bold text-gray-600 block mb-1">3. Mode Perhitungan Nilai:</label>
@@ -410,16 +393,10 @@
               <table class="w-full text-xs text-left border-collapse">
                 <thead>
                   <tr class="bg-gray-100 border-b uppercase text-gray-600">
-                    <th class="p-3">No</th>
-                    <th class="p-3">Username</th>
-                    <th class="p-3">Nama Lengkap Siswa</th>
-                    <th class="p-3">Kelas</th>
-                    <th class="p-3">ID Mapel</th>
-                    <th class="p-3 text-center">Skor Tahap 1 (PG)</th>
-                    <th class="p-3 text-center">Skor Tahap 2 (Esai)</th>
-                    <th class="p-3 text-center">Nilai Akhir</th>
-                    <th class="p-3 text-center">Pelanggaran</th>
-                    <th class="p-3">Status Ujian</th>
+                    <th class="p-3">No</th><th class="p-3">Username</th><th class="p-3">Nama Lengkap Siswa</th>
+                    <th class="p-3">Kelas</th><th class="p-3">ID Mapel</th><th class="p-3 text-center">Skor Tahap 1 (PG)</th>
+                    <th class="p-3 text-center">Skor Tahap 2 (Esai)</th><th class="p-3 text-center">Nilai Akhir</th>
+                    <th class="p-3 text-center">Pelanggaran</th><th class="p-3">Status Ujian</th>
                   </tr>
                 </thead>
                 <tbody id="table-rekap-perkelas" class="divide-y"></tbody>
@@ -432,8 +409,8 @@
         <div id="tab-token" class="hidden bg-white rounded-xl border border-gray-200 p-6 shadow-sm space-y-5">
           <div class="flex flex-wrap items-center justify-between gap-4 border-b pb-4">
             <div>
-              <h3 class="text-base font-bold text-gray-800">Rilis Token Ujian (Mendukung Tahap 1 Saja atau Tahap 2 Saja)</h3>
-              <p class="text-xs text-gray-500">Jika hanya ujian Pilihan Ganda, rilis token <b>Tahap 1</b>. Jika hanya ujian Uraian/Esai, rilis token <b>Tahap 2</b>.</p>
+              <h3 class="text-base font-bold text-gray-800">Rilis Token Ujian (Tahap 1 Saja atau Tahap 2 Saja)</h3>
+              <p class="text-xs text-gray-500">Jika hanya ujian Pilihan Ganda, rilis token <b>Tahap 1</b>.</p>
             </div>
             <div class="flex flex-wrap items-center gap-2 text-xs">
               <select id="token-mapel" class="border p-2 rounded-lg bg-white"></select>
@@ -503,13 +480,25 @@
       recalculateClassScores: ['idMapel', 'kelas', 'modeHitung']
     };
 
+    let currentUser = null;
+    let pollingInterval = null;
+    let masterData = null;
+
+    // Sanitasi XSS 
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag]));
+    }
+
     function callGasApi(actionName, args, onSuccess) {
       let payload = {};
       (paramMap[actionName] || []).forEach((k, idx) => payload[k] = args[idx]);
+      const tokenSesi = currentUser ? currentUser.sessionToken : null;
+      
       fetch(GAS_API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: actionName, payload })
+        body: JSON.stringify({ action: actionName, payload: payload, sessionToken: tokenSesi })
       })
       .then(r => r.json())
       .then(data => { if (onSuccess) onSuccess(data); })
@@ -518,10 +507,6 @@
         Swal.fire('Koneksi Bermasalah', 'Gagal menghubungi server Google Apps Script.', 'error');
       });
     }
-
-    let currentUser = null;
-    let pollingInterval = null;
-    let masterData = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       if (window.lucide) lucide.createIcons();
@@ -549,6 +534,7 @@
           return Swal.fire('Akses Ditolak', 'Halaman ini khusus untuk Guru / Pengawas Ujian!', 'error');
         }
         currentUser = res.user;
+        currentUser.sessionToken = res.sessionToken; // Menyimpan Session Token
         sessionStorage.setItem('CBT_GURU_USER', JSON.stringify(currentUser));
         enterGuruDashboard();
       });
@@ -557,8 +543,8 @@
     function enterGuruDashboard() {
       document.getElementById('view-login').classList.add('hidden');
       document.getElementById('view-guru').classList.remove('hidden');
-      document.getElementById('guru-user-badge').innerText = `${currentUser.nama} (${currentUser.peran})`;
-      document.getElementById('greeting-banner').innerText = `Selamat bertugas, ${currentUser.nama}`;
+      document.getElementById('guru-user-badge').innerText = `${escapeHTML(currentUser.nama)} (${escapeHTML(currentUser.peran)})`;
+      document.getElementById('greeting-banner').innerText = `Selamat bertugas, ${escapeHTML(currentUser.nama)}`;
       refreshData();
       clearInterval(pollingInterval);
       pollingInterval = setInterval(refreshData, 15000);
@@ -599,6 +585,8 @@
     }
 
     function refreshData() {
+      if (document.hidden) return; // Mencegah polling (memakan kuota API) saat tab tidak aktif
+      
       const fKelas = document.getElementById('filter-kelas').value;
       const fMapel = document.getElementById('filter-mapel').value;
 
@@ -639,16 +627,16 @@
 
         document.getElementById('table-live-monitoring').innerHTML = (data.sesiAktif || []).map(s => `
           <tr class="hover:bg-gray-50">
-            <td class="py-3 px-4 font-semibold">${s['Nama Siswa']} <span class="block text-gray-400" style="font-size:10px;">${s['Status']}</span></td>
-            <td class="py-3 px-3">${s['Kelas']}</td><td class="py-3 px-3">${s['Mapel']}</td><td class="py-3 px-3">${s['Tahap']}</td>
-            <td class="py-3 px-3 font-mono font-semibold">${s['Progres']}</td><td class="py-3 px-3 font-mono">${s['Sisa Waktu']}</td>
-            <td class="py-3 px-3 font-bold text-red-600">${s['Jumlah Pelanggaran']}x</td>
+            <td class="py-3 px-4 font-semibold">${escapeHTML(s['Nama Siswa'])} <span class="block text-gray-400" style="font-size:10px;">${escapeHTML(s['Status'])}</span></td>
+            <td class="py-3 px-3">${escapeHTML(s['Kelas'])}</td><td class="py-3 px-3">${escapeHTML(s['Mapel'])}</td><td class="py-3 px-3">${escapeHTML(s['Tahap'])}</td>
+            <td class="py-3 px-3 font-mono font-semibold">${escapeHTML(s['Progres'])}</td><td class="py-3 px-3 font-mono">${escapeHTML(s['Sisa Waktu'])}</td>
+            <td class="py-3 px-3 font-bold text-red-600">${escapeHTML(s['Jumlah Pelanggaran'])}x</td>
           </tr>`).join('') || `<tr><td colspan="7" class="py-8 text-center text-gray-400">Belum ada sesi ujian aktif.</td></tr>`;
 
         document.getElementById('panel-perlu-perhatian').innerHTML = (data.pelanggaranTerbaru || []).slice(0, 6).map(p => `
           <div class="p-2.5 rounded-lg bg-red-50 border border-red-200">
-            <div class="font-bold text-red-800">${p['Nama Siswa']} (${p['Kelas']})</div>
-            <div class="text-xs text-red-600">${p['Jenis Pelanggaran']}</div>
+            <div class="font-bold text-red-800">${escapeHTML(p['Nama Siswa'])} (${escapeHTML(p['Kelas'])})</div>
+            <div class="text-xs text-red-600">${escapeHTML(p['Jenis Pelanggaran'])}</div>
           </div>`).join('') || `<div class="text-gray-400 text-center py-4">Tidak ada pelanggaran baru.</div>`;
 
         document.getElementById('table-bank-soal').innerHTML = (data.soalList || []).map((q, idx) => {
@@ -656,17 +644,17 @@
           const firstImgUrl = (q['Gambar Soal'] || q['Gambar Opsi A'] || '').split(',')[0].trim();
           return `
           <tr class="hover:bg-gray-50">
-            <td class="p-2.5 font-mono text-gray-500">${q['ID Soal']}</td>
-            <td class="p-2.5 font-semibold">${q['ID Mapel']} <span class="block text-gray-400 font-normal">${q['Kelas']}</span></td>
-            <td class="p-2.5"><span class="px-2 py-0.5 rounded text-xs font-semibold ${q['Tahap'] === 'Tahap 1' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}">${q['Tahap']} (${q['Jenis Soal']})</span></td>
-            <td class="p-2.5 max-w-md whitespace-pre-line">${q['Pertanyaan']}</td>
-            <td class="p-2.5">${hasAnyImg ? (firstImgUrl ? `<button onclick="previewImg('${firstImgUrl}')" class="text-teal-600 underline font-semibold">Lihat Gambar</button>` : 'Ada Gambar Opsi') : '-'}</td>
-            <td class="p-2.5 font-bold text-teal-700">${q['Kunci/Pedoman']}</td>
-            <td class="p-2.5 font-mono">${q['Bobot Nilai']}</td>
+            <td class="p-2.5 font-mono text-gray-500">${escapeHTML(q['ID Soal'])}</td>
+            <td class="p-2.5 font-semibold">${escapeHTML(q['ID Mapel'])} <span class="block text-gray-400 font-normal">${escapeHTML(q['Kelas'])}</span></td>
+            <td class="p-2.5"><span class="px-2 py-0.5 rounded text-xs font-semibold ${q['Tahap'] === 'Tahap 1' ? 'bg-blue-50 text-blue-700' : 'bg-purple-50 text-purple-700'}">${escapeHTML(q['Tahap'])} (${escapeHTML(q['Jenis Soal'])})</span></td>
+            <td class="p-2.5 max-w-md whitespace-pre-line">${escapeHTML(q['Pertanyaan'])}</td>
+            <td class="p-2.5">${hasAnyImg ? (firstImgUrl ? `<button onclick="previewImg('${escapeHTML(firstImgUrl)}')" class="text-teal-600 underline font-semibold">Lihat Gambar</button>` : 'Ada Gambar Opsi') : '-'}</td>
+            <td class="p-2.5 font-bold text-teal-700">${escapeHTML(q['Kunci/Pedoman'])}</td>
+            <td class="p-2.5 font-mono">${escapeHTML(q['Bobot Nilai'])}</td>
             <td class="p-2.5 text-center">
               <div class="flex items-center justify-center gap-1.5">
                 <button onclick="loadQuestionToEdit(${idx})" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2.5 py-1 rounded font-semibold">Edit</button>
-                <button onclick="confirmDeleteQuestion('${q['ID Soal']}')" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded font-semibold">Hapus</button>
+                <button onclick="confirmDeleteQuestion('${escapeHTML(q['ID Soal'])}')" class="bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded font-semibold">Hapus</button>
               </div>
             </td>
           </tr>`;
@@ -675,24 +663,24 @@
         document.getElementById('table-koreksi-esai').innerHTML = (data.jawabanEsai || []).map(j => `
           <tr class="hover:bg-gray-50 align-top">
             <td class="p-3">
-              <div class="font-bold text-gray-800">${j.namaSiswa}</div>
-              <div class="text-gray-500">${j.kelasSiswa} • <span class="font-mono">${j['Username Siswa']}</span></div>
+              <div class="font-bold text-gray-800">${escapeHTML(j.namaSiswa)}</div>
+              <div class="text-gray-500">${escapeHTML(j.kelasSiswa)} • <span class="font-mono">${escapeHTML(j['Username Siswa'])}</span></div>
             </td>
-            <td class="p-3 font-semibold">${j['ID Mapel']}</td>
+            <td class="p-3 font-semibold">${escapeHTML(j['ID Mapel'])}</td>
             <td class="p-3 max-w-sm">
-              <div class="font-medium text-gray-800 whitespace-pre-line">${j.teksPertanyaan}</div>
+              <div class="font-medium text-gray-800 whitespace-pre-line">${escapeHTML(j.teksPertanyaan)}</div>
               <div class="mt-1.5 p-2 rounded bg-teal-50 border border-teal-200 text-teal-800">
-                <b>Pedoman Kunci:</b> ${j.pedomanKunci}
+                <b>Pedoman Kunci:</b> ${escapeHTML(j.pedomanKunci)}
               </div>
             </td>
-            <td class="p-3 max-w-md whitespace-pre-line bg-yellow-50 border border-yellow-200 rounded font-medium text-gray-800">${j['Jawaban Siswa'] || '(Kosong)'}</td>
+            <td class="p-3 max-w-md whitespace-pre-line bg-yellow-50 border border-yellow-200 rounded font-medium text-gray-800">${escapeHTML(j['Jawaban Siswa'] || '(Kosong)')}</td>
             <td class="p-3">
-              <span class="px-2 py-1 rounded text-xs font-semibold ${j['Status Koreksi'] === 'Selesai' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${j['Status Koreksi']}</span>
+              <span class="px-2 py-1 rounded text-xs font-semibold ${j['Status Koreksi'] === 'Selesai' ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}">${escapeHTML(j['Status Koreksi'])}</span>
             </td>
             <td class="p-3">
               <div class="flex items-center justify-center gap-1.5">
-                <input id="score-${j['ID Jawaban']}" type="number" min="0" max="100" value="${j['Skor Diperoleh']}" class="w-20 border-2 border-teal-500 p-1.5 rounded-lg text-center font-bold text-sm">
-                <button onclick="submitEssayScore('${j['ID Jawaban']}')" class="text-white px-3 py-1.5 rounded-lg font-semibold shadow-sm" style="background-color:#0d9488;">Simpan Nilai</button>
+                <input id="score-${escapeHTML(j['ID Jawaban'])}" type="number" min="0" max="100" value="${escapeHTML(j['Skor Diperoleh'])}" class="w-20 border-2 border-teal-500 p-1.5 rounded-lg text-center font-bold text-sm">
+                <button onclick="submitEssayScore('${escapeHTML(j['ID Jawaban']}')" class="text-white px-3 py-1.5 rounded-lg font-semibold shadow-sm" style="background-color:#0d9488;">Simpan</button>
               </div>
             </td>
           </tr>`).join('') || `<tr><td colspan="6" class="p-6 text-center text-gray-400">Belum ada jawaban Esai (Tahap 2) yang masuk.</td></tr>`;
@@ -701,19 +689,18 @@
 
         document.getElementById('table-token-list').innerHTML = (data.tokenList || []).map(t => `
           <tr>
-            <td class="p-3 font-mono font-bold text-sm text-teal-700">${t['Kode Token']}</td>
-            <td class="p-3">${t['ID Mapel']}</td><td class="p-3">${t['Kelas']}</td>
-            <td class="p-3 font-semibold">${t['Tahap']}</td>
-            <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${t['Status'] === 'Aktif' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}">${t['Status']}</span></td>
-            <td class="p-3"><button onclick="toggleToken('${t['Kode Token']}')" class="underline text-blue-600 font-semibold">Ubah Status</button></td>
+            <td class="p-3 font-mono font-bold text-sm text-teal-700">${escapeHTML(t['Kode Token'])}</td>
+            <td class="p-3">${escapeHTML(t['ID Mapel'])}</td><td class="p-3">${escapeHTML(t['Kelas'])}</td>
+            <td class="p-3 font-semibold">${escapeHTML(t['Tahap'])}</td>
+            <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-bold ${t['Status'] === 'Aktif' ? 'bg-green-100 text-green-700' : 'bg-gray-200 text-gray-600'}">${escapeHTML(t['Status'])}</span></td>
+            <td class="p-3"><button onclick="toggleToken('${escapeHTML(t['Kode Token'])}')" class="underline text-blue-600 font-semibold">Ubah Status</button></td>
           </tr>`).join('');
 
         document.getElementById('table-log-pelanggaran').innerHTML = (data.pelanggaranTerbaru || []).map(p => `
-          <tr><td class="p-3 font-mono">${p['Waktu Kejadian']}</td><td class="p-3">${p['Username Siswa']}</td><td class="p-3 font-semibold">${p['Nama Siswa']}</td><td class="p-3">${p['Kelas']}</td><td class="p-3">${p['Mapel']}</td><td class="p-3 text-red-600 font-semibold">${p['Jenis Pelanggaran']}</td></tr>`).join('');
+          <tr><td class="p-3 font-mono">${escapeHTML(p['Waktu Kejadian'])}</td><td class="p-3">${escapeHTML(p['Username Siswa'])}</td><td class="p-3 font-semibold">${escapeHTML(p['Nama Siswa'])}</td><td class="p-3">${escapeHTML(p['Kelas'])}</td><td class="p-3">${escapeHTML(p['Mapel'])}</td><td class="p-3 text-red-600 font-semibold">${escapeHTML(p['Jenis Pelanggaran'])}</td></tr>`).join('');
       });
     }
 
-    // ==================== LOGIKA EDIT (KOREKSI), HAPUS SATUAN & HAPUS SEMUA SOAL ====================
     function loadQuestionToEdit(idx) {
       if (!masterData || !masterData.soalList[idx]) return;
       const q = masterData.soalList[idx];
@@ -754,20 +741,11 @@
     function saveOrUpdateQuestion() {
       const idSoal = document.getElementById('edit-id-soal').value;
       const q = {
-        idSoal: idSoal,
-        idMapel: document.getElementById('q-mapel').value,
-        kelas: document.getElementById('q-kelas').value,
-        tahap: document.getElementById('q-tahap').value,
-        jenis: document.getElementById('q-jenis').value,
-        pertanyaan: document.getElementById('q-pertanyaan').value,
-        gambarSoal: document.getElementById('q-gambar-soal').value,
-        opsiA: document.getElementById('q-opsia').value,
-        opsiB: document.getElementById('q-opsib').value,
-        opsiC: document.getElementById('q-opsic').value,
-        opsiD: document.getElementById('q-opsid').value,
-        opsiE: document.getElementById('q-opsie').value,
-        kunci: document.getElementById('q-kunci').value,
-        bobot: document.getElementById('q-bobot').value
+        idSoal: idSoal, idMapel: document.getElementById('q-mapel').value, kelas: document.getElementById('q-kelas').value,
+        tahap: document.getElementById('q-tahap').value, jenis: document.getElementById('q-jenis').value, pertanyaan: document.getElementById('q-pertanyaan').value,
+        gambarSoal: document.getElementById('q-gambar-soal').value, opsiA: document.getElementById('q-opsia').value, opsiB: document.getElementById('q-opsib').value,
+        opsiC: document.getElementById('q-opsic').value, opsiD: document.getElementById('q-opsid').value, opsiE: document.getElementById('q-opsie').value,
+        kunci: document.getElementById('q-kunci').value, bobot: document.getElementById('q-bobot').value
       };
 
       if (!q.pertanyaan.trim()) return Swal.fire('Perhatian', 'Pertanyaan soal tidak boleh kosong!', 'warning');
@@ -782,13 +760,8 @@
 
     function confirmDeleteQuestion(idSoal) {
       Swal.fire({
-        title: `Hapus Soal ${idSoal}?`,
-        text: 'Soal yang dihapus tidak dapat dikembalikan.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        confirmButtonText: 'Ya, Hapus Soal',
-        cancelButtonText: 'Batal'
+        title: `Hapus Soal ${escapeHTML(idSoal)}?`, text: 'Soal yang dihapus tidak dapat dikembalikan.', icon: 'warning',
+        showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Ya, Hapus Soal', cancelButtonText: 'Batal'
       }).then(res => {
         if (res.isConfirmed) {
           callGasApi('deleteQuestion', [idSoal], r => {
@@ -801,7 +774,6 @@
 
     function openBulkDeleteModal() {
       const fMapel = document.getElementById('filter-mapel') ? document.getElementById('filter-mapel').value : 'ALL';
-
       Swal.fire({
         title: 'Hapus Banyak / Semua Soal?',
         html: `
@@ -811,7 +783,7 @@
               <label class="font-bold block mb-1">Target Mata Pelajaran:</label>
               <select id="swal-del-mapel" class="w-full border p-2 rounded-lg">
                 <option value="ALL">SEMUA MATA PELAJARAN (Sapu Bersih)</option>
-                ${(masterData && masterData.mapelList || []).map(m => `<option value="${m['ID Mapel']}" ${m['ID Mapel']===fMapel?'selected':''}>${m['ID Mapel']} - ${m['Nama Mapel']}</option>`).join('')}
+                ${(masterData && masterData.mapelList || []).map(m => `<option value="${escapeHTML(m['ID Mapel'])}" ${m['ID Mapel']===fMapel?'selected':''}>${escapeHTML(m['ID Mapel'])} - ${escapeHTML(m['Nama Mapel'])}</option>`).join('')}
               </select>
             </div>
             <div>
@@ -828,21 +800,11 @@
             </div>
           </div>
         `,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#dc2626',
-        confirmButtonText: 'Eksekusi Hapus Semua',
-        cancelButtonText: 'Batal',
+        icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Eksekusi Hapus Semua', cancelButtonText: 'Batal',
         preConfirm: () => {
           const confirmTxt = document.getElementById('swal-del-confirm').value.trim().toUpperCase();
-          if (confirmTxt !== 'HAPUS') {
-            Swal.showValidationMessage('Anda wajib mengetik kata HAPUS untuk melanjutkan!');
-            return false;
-          }
-          return {
-            idMapel: document.getElementById('swal-del-mapel').value,
-            tahap: document.getElementById('swal-del-tahap').value
-          };
+          if (confirmTxt !== 'HAPUS') { Swal.showValidationMessage('Anda wajib mengetik kata HAPUS untuk melanjutkan!'); return false; }
+          return { idMapel: document.getElementById('swal-del-mapel').value, tahap: document.getElementById('swal-del-tahap').value };
         }
       }).then(res => {
         if (res.isConfirmed) {
@@ -855,7 +817,6 @@
       });
     }
 
-    // ==================== LOGIKA REKAP NILAI SELURUH SISWA PER KELAS ====================
     function getProcessedRekapList() {
       if (!masterData) return [];
       const fKelas = document.getElementById('rekap-filter-kelas').value;
@@ -869,10 +830,7 @@
       allStudents.forEach(stu => {
         if (fKelas !== 'ALL' && stu['Kelas'] !== fKelas) return;
 
-        const studentGrades = nilaiRecords.filter(n =>
-          String(n['Username Siswa']) === String(stu['Username']) &&
-          (fMapel === 'ALL' || String(n['Mapel']) === fMapel)
-        );
+        const studentGrades = nilaiRecords.filter(n => String(n['Username Siswa']) === String(stu['Username']) && (fMapel === 'ALL' || String(n['Mapel']) === fMapel));
 
         if (studentGrades.length > 0) {
           studentGrades.forEach(g => {
@@ -885,32 +843,17 @@
             else akhir = Math.round((pg * 0.6) + (esaiNum * 0.4));
 
             rows.push({
-              username: stu['Username'],
-              nama: stu['Nama Lengkap'],
-              kelas: stu['Kelas'],
-              mapel: g['Mapel'],
-              skorPG: pg,
-              skorEsai: esaiRaw,
-              nilaiAkhir: akhir,
-              pelanggaran: g['Jumlah Pelanggaran'] || 0,
-              status: g['Status Nilai'] || 'Selesai'
+              username: stu['Username'], nama: stu['Nama Lengkap'], kelas: stu['Kelas'], mapel: g['Mapel'],
+              skorPG: pg, skorEsai: esaiRaw, nilaiAkhir: akhir, pelanggaran: g['Jumlah Pelanggaran'] || 0, status: g['Status Nilai'] || 'Selesai'
             });
           });
         } else {
           rows.push({
-            username: stu['Username'],
-            nama: stu['Nama Lengkap'],
-            kelas: stu['Kelas'],
-            mapel: fMapel === 'ALL' ? '-' : fMapel,
-            skorPG: 0,
-            skorEsai: 0,
-            nilaiAkhir: 0,
-            pelanggaran: 0,
-            status: 'Belum Ujian'
+            username: stu['Username'], nama: stu['Nama Lengkap'], kelas: stu['Kelas'], mapel: fMapel === 'ALL' ? '-' : fMapel,
+            skorPG: 0, skorEsai: 0, nilaiAkhir: 0, pelanggaran: 0, status: 'Belum Ujian'
           });
         }
       });
-
       return rows.sort((a, b) => a.kelas.localeCompare(b.kelas) || a.nama.localeCompare(b.nama));
     }
 
@@ -925,15 +868,15 @@
       tbody.innerHTML = rows.map((r, i) => `
         <tr class="hover:bg-gray-50">
           <td class="p-3 font-mono">${i + 1}</td>
-          <td class="p-3 font-mono text-gray-600">${r.username}</td>
-          <td class="p-3 font-bold text-gray-800">${r.nama}</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded bg-teal-50 text-teal-800 font-semibold">${r.kelas}</span></td>
-          <td class="p-3">${r.mapel}</td>
-          <td class="p-3 text-center font-bold text-blue-600">${r.skorPG}</td>
-          <td class="p-3 text-center font-bold text-purple-600">${r.skorEsai}</td>
-          <td class="p-3 text-center font-extrabold text-sm text-green-700 bg-green-50">${r.nilaiAkhir}</td>
-          <td class="p-3 text-center font-bold text-red-600">${r.pelanggaran}x</td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-semibold ${r.status === 'Belum Ujian' ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-700'}">${r.status}</span></td>
+          <td class="p-3 font-mono text-gray-600">${escapeHTML(r.username)}</td>
+          <td class="p-3 font-bold text-gray-800">${escapeHTML(r.nama)}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded bg-teal-50 text-teal-800 font-semibold">${escapeHTML(r.kelas)}</span></td>
+          <td class="p-3">${escapeHTML(r.mapel)}</td>
+          <td class="p-3 text-center font-bold text-blue-600">${escapeHTML(r.skorPG)}</td>
+          <td class="p-3 text-center font-bold text-purple-600">${escapeHTML(r.skorEsai)}</td>
+          <td class="p-3 text-center font-extrabold text-sm text-green-700 bg-green-50">${escapeHTML(r.nilaiAkhir)}</td>
+          <td class="p-3 text-center font-bold text-red-600">${escapeHTML(r.pelanggaran)}x</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-semibold ${r.status === 'Belum Ujian' ? 'bg-gray-100 text-gray-500' : 'bg-green-100 text-green-700'}">${escapeHTML(r.status)}</span></td>
         </tr>
       `).join('');
     }
@@ -959,16 +902,7 @@
 
       rows.forEach((r, idx) => {
         csvRows.push([
-          idx + 1,
-          `"${r.username}"`,
-          `"${r.nama}"`,
-          `"${r.kelas}"`,
-          `"${r.mapel}"`,
-          r.skorPG,
-          `"${r.skorEsai}"`,
-          r.nilaiAkhir,
-          r.pelanggaran,
-          `"${r.status}"`
+          idx + 1, `"${r.username}"`, `"${r.nama}"`, `"${r.kelas}"`, `"${r.mapel}"`, r.skorPG, `"${r.skorEsai}"`, r.nilaiAkhir, r.pelanggaran, `"${r.status}"`
         ].join(','));
       });
 
@@ -980,7 +914,6 @@
       a.click();
     }
 
-    // ==================== FUNGSI IMPOR, NILAI ESAI, TOKEN & GALERI ====================
     function submitEssayScore(idJawaban) {
       const val = document.getElementById('score-' + idJawaban).value;
       const mode = document.getElementById('select-mode-esai').value;
@@ -1010,9 +943,7 @@
       });
     }
 
-    function toggleToken(kode) {
-      callGasApi('toggleTokenStatus', [kode], () => refreshData());
-    }
+    function toggleToken(kode) { callGasApi('toggleTokenStatus', [kode], () => refreshData()); }
 
     function previewImg(url) {
       document.getElementById('lightbox-img').src = url;
@@ -1025,8 +956,8 @@
       callGasApi('getDriveImagesList', [], files => {
         grid.innerHTML = (files || []).map(f => `
           <div class="border rounded-xl p-2 bg-gray-50">
-            <img src="${f.url}" onclick="previewImg('${f.url}')" class="h-28 w-full object-contain rounded bg-white border cursor-pointer">
-            <div class="mt-2 truncate text-xs">${f.name}</div>
+            <img src="${escapeHTML(f.url)}" onclick="previewImg('${escapeHTML(f.url)}')" class="h-28 w-full object-contain rounded bg-white border cursor-pointer">
+            <div class="mt-2 truncate text-xs">${escapeHTML(f.name)}</div>
           </div>
         `).join('') || `<div class="col-span-full text-gray-400">Belum ada gambar.</div>`;
       });
