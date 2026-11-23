@@ -27,7 +27,7 @@
       <div class="p-8 space-y-5">
         <input id="login-username" type="text" placeholder="NIS / Username" class="w-full px-4 py-3 border-2 rounded-xl focus:border-blue-600 outline-none text-sm">
         <input id="login-password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') loginSiswa()" class="w-full px-4 py-3 border-2 rounded-xl focus:border-blue-600 outline-none text-sm">
-        <button onclick="loginSiswa()" class="w-full bg-blue-600 text-white font-bold py-3.5 rounded-xl">Masuk</button>
+        <button onclick="loginSiswa()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition">Masuk</button>
       </div>
     </div>
   </div>
@@ -68,7 +68,7 @@
   </div>
 
   <script>
-    // Wajib sesuaikan URL API ini dengan Web App milik Anda
+    // URL Anda
     const API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
     
     let user = null, sesi = null, soalList = [], curIdx = 0, jawaban = {}, sisaDetik = 0, timer = null, pelanggaran = 0, isUjian = false, lastBlur = 0;
@@ -79,11 +79,10 @@
 
     function callAPI(action, payload, callback) {
       showLoading();
-      
-      // PERBAIKAN: Hanya sisipkan username jika sudah login, dan hindari menimpa payload asli saat login
-      let finalPayload = payload;
-      if (user && user.username) {
-        finalPayload = { u: user.username, ...payload };
+      // Perbaikan Mutlak: Pisahkan identitas username agar tidak bentrok saat login awal
+      let finalPayload = { ...payload };
+      if (user && user.username && action !== 'login') {
+        finalPayload.u = user.username;
       }
       
       fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload: finalPayload }) })
@@ -91,9 +90,13 @@
     }
 
     function loginSiswa() {
-      const u = document.getElementById('login-username').value, p = document.getElementById('login-password').value;
-      if (!u || !p) return;
-      callAPI('login', { u, p, role: 'Siswa' }, res => {
+      // Penambahan .trim() untuk membuang spasi tak sengaja dari HP
+      const u = document.getElementById('login-username').value.trim();
+      const p = document.getElementById('login-password').value.trim();
+      
+      if (!u || !p) return Swal.fire('Perhatian', 'Harap isi NIS dan Password!', 'warning');
+      
+      callAPI('login', { u: u, p: p, role: 'Siswa' }, res => {
         if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
         user = res.data;
         document.getElementById('view-login').classList.add('hidden');
@@ -104,11 +107,11 @@
     }
 
     function mulaiUjian() {
-      const token = document.getElementById('input-token').value;
-      if (!token) return;
+      const token = document.getElementById('input-token').value.trim();
+      if (!token) return Swal.fire('Perhatian', 'Ketik token ujian!', 'warning');
       if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
 
-      callAPI('mulaiUjian', { token }, res => {
+      callAPI('mulaiUjian', { token: token }, res => {
         if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
         sesi = res.sesi; soalList = res.soal; curIdx = 0; jawaban = {}; pelanggaran = sesi.pelanggaran; sisaDetik = sesi.durasi * 60;
         document.getElementById('view-lobby').classList.add('hidden');
