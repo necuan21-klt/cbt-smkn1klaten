@@ -417,16 +417,19 @@
       });
     }
 
-    function hapusSemuaSoal() {
+   function hapusSemuaSoal() {
+      // 1. Ambil daftar mapel unik dari cache
       const mapels = [...new Set(cacheSoal.map(s => s.mapel))].filter(Boolean);
       
       if (mapels.length === 0) return Swal.fire('Info', 'Bank soal saat ini sudah kosong.', 'info');
 
+      // 2. Susun opsi dropdown (Hapus Total + Hapus per Mapel)
       let optionsHtml = `<option value="SEMUA" class="font-bold text-red-600">⚠ HAPUS SEMUA MAPEL (TOTAL KOSONG)</option>`;
       mapels.forEach(m => {
         optionsHtml += `<option value="${m}" class="text-slate-700 font-semibold">Hapus khusus mapel: ${m}</option>`;
       });
 
+      // 3. Tampilkan SweetAlert dengan Dropdown
       Swal.fire({
         title: 'Hapus Soal Masal',
         html: `
@@ -444,13 +447,21 @@
         showCancelButton: true, confirmButtonColor: '#dc2626', cancelButtonColor: '#94a3b8',
         confirmButtonText: 'Ya, Eksekusi Hapus', cancelButtonText: 'Batal',
         didOpen: () => { lucide.createIcons(); },
-        preConfirm: () => { return document.getElementById('hapus-target').value; }
+        preConfirm: () => {
+          // Ambil nilai mapel dari dropdown saat tombol Ya ditekan
+          return document.getElementById('hapus-target').value;
+        }
       }).then(res => {
         if (res.isConfirmed) {
           const targetMapel = res.value;
+          // Kirim perintah ke Code.gs dengan membawa target mapel
           callAPI('hapusSemuaSoal', { mapel: targetMapel }, (out) => {
-            if (out.success) { Swal.fire('Berhasil', out.msg, 'success'); refreshData(); }
-            else Swal.fire('Gagal', out.msg, 'error');
+            if (out.success) {
+              Swal.fire('Berhasil', out.msg, 'success');
+              refreshData(); // Refresh tabel setelah dihapus
+            } else {
+              Swal.fire('Gagal', out.msg, 'error');
+            }
           });
         }
       });
