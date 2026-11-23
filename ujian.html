@@ -27,14 +27,27 @@
     <div class="loader mb-3"></div><div class="text-sm font-bold text-slate-700" id="loading-text">Memproses Data...</div>
   </div>
 
+  <!-- VIEW 0: LOGIN SISWA (Berada di dalam ujian.html) -->
+  <div id="view-login" class="flex-1 flex items-center justify-center p-5 bg-gradient-to-br from-slate-900 to-slate-800">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+      <div class="p-8 text-center bg-blue-600 relative overflow-hidden">
+        <i data-lucide="smartphone" class="w-12 h-12 mx-auto mb-3 text-white"></i>
+        <h1 class="text-2xl font-bold text-white">CBT MOBILE</h1>
+      </div>
+      <div class="p-8 space-y-5">
+        <input id="login-username" type="text" placeholder="NIS / Username" class="w-full px-4 py-3 border-2 rounded-xl focus:border-blue-600 outline-none text-sm">
+        <input id="login-password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') loginSiswa()" class="w-full px-4 py-3 border-2 rounded-xl focus:border-blue-600 outline-none text-sm">
+        <button onclick="loginSiswa()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition">Masuk</button>
+      </div>
+    </div>
+  </div>
+
   <!-- VIEW 1: LOBBY (INPUT TOKEN) -->
-  <div id="view-lobby" class="flex-1 flex items-center justify-center p-5 bg-gradient-to-br from-slate-50 to-slate-100">
+  <div id="view-lobby" class="hidden flex-1 flex items-center justify-center p-5 bg-gradient-to-br from-slate-50 to-slate-100">
     <div class="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 w-full max-w-sm p-8 space-y-6 text-center border border-slate-100 relative overflow-hidden">
       
-      <!-- Hiasan Background -->
       <div class="absolute -top-16 -right-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
       
-      <!-- Header Lobby -->
       <div class="relative z-10">
         <div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto shadow-inner border border-blue-100 mb-4">
           <i data-lucide="fingerprint" class="w-8 h-8"></i>
@@ -46,14 +59,12 @@
         </div>
       </div>
       
-      <!-- Box Peringatan -->
       <div class="bg-red-50 border border-red-100 p-4 rounded-2xl text-left text-xs text-red-800 space-y-1.5 shadow-sm relative z-10">
         <strong class="block mb-2 text-sm flex items-center gap-1.5 text-red-600"><i data-lucide="shield-alert" class="w-4 h-4"></i> Proteksi Anti-Cheat</strong>
         <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Sistem mengunci layar secara penuh.</p>
         <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Dilarang berpindah aplikasi (WA, Google).</p>
       </div>
       
-      <!-- Input & Tombol -->
       <div class="pt-2 relative z-10">
         <input id="input-token" type="text" placeholder="KETIK TOKEN UJIAN" class="w-full px-4 py-4 text-center text-xl font-mono font-black uppercase tracking-[0.3em] border-2 border-slate-200 rounded-2xl focus:border-blue-600 focus:bg-blue-50/30 outline-none transition-all placeholder:font-sans placeholder:font-semibold placeholder:tracking-normal placeholder:text-sm">
       </div>
@@ -72,8 +83,6 @@
     
     <!-- HEADER MODERN (MENEMPEL) -->
     <header class="bg-white px-4 py-3 flex justify-between items-center shrink-0 border-b border-slate-200 shadow-sm z-30">
-      
-      <!-- Info Kiri: Identitas & Mapel -->
       <div class="flex items-center gap-3 w-1/2">
         <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/20 relative">
           <i data-lucide="user" class="w-5 h-5"></i>
@@ -85,7 +94,6 @@
         </div>
       </div>
       
-      <!-- Info Kanan: Timer & Pelanggaran -->
       <div class="flex items-center gap-2 shrink-0">
         <div class="bg-red-50 px-2.5 py-1.5 rounded-lg text-[10px] font-bold text-red-600 border border-red-100 flex items-center gap-1 shadow-sm">
           <i data-lucide="alert-triangle" class="w-3 h-3"></i> <span id="ui-pelanggaran">0/3</span>
@@ -96,11 +104,10 @@
       </div>
     </header>
 
-    <!-- AREA SOAL (BISA DI-SCROLL) -->
+    <!-- AREA SOAL -->
     <main class="flex-1 overflow-y-auto p-4 pb-32 relative">
       <div class="bg-white rounded-[1.5rem] p-6 shadow-sm border border-slate-200 max-w-2xl mx-auto min-h-[60vh] flex flex-col relative overflow-hidden">
         
-        <!-- Label Status & Buka Grid -->
         <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
           <div class="flex gap-2">
             <span class="bg-blue-100/50 border border-blue-200 text-blue-700 font-bold px-3.5 py-1.5 rounded-xl text-xs tracking-wide shadow-sm flex items-center gap-1.5" id="ui-nosoal">
@@ -116,10 +123,7 @@
           </button>
         </div>
         
-        <!-- Konten Pertanyaan -->
         <div id="ui-pertanyaan" class="text-slate-800 text-[15px] sm:text-base leading-relaxed font-medium mb-8"></div>
-        
-        <!-- Opsi Jawaban -->
         <div id="ui-opsi" class="space-y-3 mt-auto"></div>
       </div>
     </main>
@@ -127,20 +131,16 @@
     <!-- FLOATING ACTION BAR (BOTTOM NAV) -->
     <div class="absolute bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-4 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.05)] z-20">
       <div class="flex justify-between items-center gap-3 max-w-2xl mx-auto">
-        
-        <!-- Tombol Kiri (Kembali) -->
         <button onclick="navSoal(-1)" id="btn-prev" class="flex-1 py-4 bg-slate-100 rounded-[1.2rem] text-sm font-bold text-slate-600 active:bg-slate-200 flex items-center justify-center gap-1 transition-all">
           <i data-lucide="chevron-left" class="w-5 h-5"></i> <span class="hidden sm:inline">Kembali</span>
         </button>
         
-        <!-- Tombol Tengah (Ragu-Ragu) -->
         <button onclick="toggleRagu()" id="btn-ragu" class="flex-1 py-4 bg-amber-100 text-amber-700 border border-amber-200 rounded-[1.2rem] text-sm font-bold active:bg-amber-200 flex items-center justify-center gap-1.5 transition-all">
           <div id="icon-ragu-uncheck"><i data-lucide="square" class="w-4 h-4"></i></div>
           <div id="icon-ragu-check" class="hidden"><i data-lucide="check-square" class="w-4 h-4"></i></div>
           Ragu-Ragu
         </button>
         
-        <!-- Tombol Kanan (Lanjut / Kumpulkan) -->
         <button onclick="navSoal(1)" id="btn-next" class="flex-1 py-4 bg-blue-600 rounded-[1.2rem] text-sm font-bold text-white active:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-1 transition-all shadow-lg shadow-blue-600/30">
           <span class="hidden sm:inline">Lanjut</span> <i data-lucide="chevron-right" class="w-5 h-5"></i>
         </button>
@@ -154,8 +154,6 @@
   <!-- MODAL BOTTOM SHEET: GRID SOAL -->
   <div id="modal-grid" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex flex-col justify-end transition-opacity">
     <div class="bg-white w-full max-w-2xl mx-auto rounded-t-3xl p-6 pb-10 transform transition-transform shadow-2xl flex flex-col max-h-[80vh]">
-      
-      <!-- Modal Header -->
       <div class="flex justify-between items-center mb-5 shrink-0">
         <div>
           <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Navigasi Pengerjaan</h3>
@@ -164,20 +162,15 @@
         <button onclick="tutupGrid()" class="bg-slate-100 p-2.5 rounded-full active:bg-slate-200 text-slate-500 transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       
-      <!-- Legenda Warna -->
       <div class="flex gap-4 mb-5 text-[10px] font-bold text-slate-500 uppercase tracking-wide shrink-0 bg-slate-50 p-3 rounded-xl border border-slate-100">
         <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-white border-2 border-slate-200 rounded-md"></div> Kosong</div>
         <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-blue-500 rounded-md"></div> Terjawab</div>
         <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-amber-400 rounded-md"></div> Ragu-Ragu</div>
       </div>
       
-      <!-- Scrollable Grid -->
       <div class="overflow-y-auto custom-scroll p-1 flex-1">
-        <div id="ui-grid" class="grid grid-cols-5 sm:grid-cols-7 gap-3">
-          <!-- Tombol grid di-render JS -->
-        </div>
+        <div id="ui-grid" class="grid grid-cols-5 sm:grid-cols-7 gap-3"></div>
       </div>
-      
     </div>
   </div>
 
@@ -211,8 +204,8 @@
     function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
 
     // --- INIT & SESSION CEK ---
-    // Cek apakah siswa nge-refresh halaman tapi masih ada sesi yang nyangkut di LocalStorage
     window.addEventListener('DOMContentLoaded', () => {
+      // 1. Cek apakah ada ujian yang belum dikumpulkan di LocalStorage
       const savedSesi = localStorage.getItem('cbt_sesi');
       if (savedSesi) {
         try {
@@ -231,7 +224,7 @@
           if (sisaDetik > 0) {
             setupUIUjian();
           } else {
-            kumpulUjian(true); // Waktu habis saat offline
+            kumpulUjian(true); // Auto-kumpul jika waktu sudah habis saat offline
           }
         } catch (e) {
           localStorage.removeItem('cbt_sesi');
@@ -243,44 +236,68 @@
     });
 
     function cekOtentikasiAwal() {
-      // Karena ini sistem 1 file mandiri (ujian.html), kita minta login ulang jika belum ada data.
-      // Jika Anda mengandalkan index.html untuk login, ganti ini dengan redirect ke index.html
+      // Cek apakah siswa sudah login di halaman ini sebelumnya (menggunakan Session Storage)
       const loggedUser = sessionStorage.getItem('cbt_user');
       if (loggedUser) {
         user = JSON.parse(loggedUser);
         tampilkanLobby();
       } else {
-        // Asumsi standar: login terjadi di index.html. Arahkan ke sana.
-        // Jika Anda ingin form loginnya ada di file ini, abaikan window.location dan panggil formnya.
-        window.location.href = "index.html"; 
+        // [PERBAIKAN KRUSIAL] JANGAN lempar ke index.html, tapi tampilkan form login di file ini!
+        document.getElementById('view-login').classList.remove('hidden');
+        document.getElementById('view-lobby').classList.add('hidden');
+        document.getElementById('view-ujian').classList.add('hidden');
       }
     }
 
-    // Dipanggil saat login dari index.html berhasil dan berpindah ke sini
     function tampilkanLobby() {
       document.getElementById('lobby-nama').innerText = user.nama;
       document.getElementById('lobby-kelas').innerText = user.kelas;
       document.getElementById('lobby-username').innerText = user.username;
       
+      document.getElementById('view-login').classList.add('hidden');
       document.getElementById('view-lobby').classList.remove('hidden');
       document.getElementById('view-ujian').classList.add('hidden');
     }
 
     function keluarSistem() {
+      // [PERBAIKAN KRUSIAL] Kosongkan sesi, dan tampilkan form login (jangan lempar ke index.html)
       sessionStorage.removeItem('cbt_user');
-      window.location.href = "index.html";
+      
+      document.getElementById('login-username').value = '';
+      document.getElementById('login-password').value = '';
+      
+      document.getElementById('view-login').classList.remove('hidden');
+      document.getElementById('view-lobby').classList.add('hidden');
+      document.getElementById('view-ujian').classList.add('hidden');
     }
 
     // --- KONEKSI API ---
     function callAPI(action, payload, callback) {
       showLoading();
       let finalPayload = { ...payload };
-      if (user && user.username) finalPayload.u = user.username;
+      if (user && user.username && action !== 'login') finalPayload.u = user.username;
       
       fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload: finalPayload }) })
       .then(r => r.json())
       .then(res => { hideLoading(); callback(res); })
       .catch(() => { hideLoading(); Swal.fire('Error', 'Gagal koneksi ke server pusat. Periksa koneksi internet.', 'error'); });
+    }
+
+    function loginSiswa() {
+      const u = document.getElementById('login-username').value.trim();
+      const p = document.getElementById('login-password').value.trim();
+      
+      if (!u || !p) return Swal.fire('Perhatian', 'Harap isi NIS dan Password!', 'warning');
+      
+      callAPI('login', { u: u, p: p, role: 'Siswa' }, res => {
+        if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
+        
+        user = res.data;
+        // [PERBAIKAN KRUSIAL] Simpan data login siswa ke SessionStorage agar aman saat direfresh
+        sessionStorage.setItem('cbt_user', JSON.stringify(user));
+        
+        tampilkanLobby();
+      });
     }
 
     // --- ALUR MULAI UJIAN ---
@@ -509,8 +526,11 @@
                 Swal.fire({ 
                     icon: 'success', title: 'UJIAN SELESAI', 
                     html: `Jawaban berhasil direkam.<br><b>NILAI ANDA: <span class="text-3xl text-emerald-600 ml-2">${res.skor}</span></b>`, 
-                    allowOutsideClick: false, confirmButtonText: 'Kembali ke Beranda', confirmButtonColor: '#10b981'
-                }).then(() => { window.location.href = 'index.html'; });
+                    allowOutsideClick: false, confirmButtonText: 'Tutup', confirmButtonColor: '#10b981'
+                }).then(() => { 
+                    // [PERBAIKAN] Kembali ke Index Utama setelah ujian selesai
+                    window.location.href = 'index.html'; 
+                });
             } else {
                 Swal.fire({ icon: 'error', title: 'Gagal Terkirim', text: res.msg + ' (Coba lagi tanpa menutup browser)', confirmButtonText: 'Coba Kirim Ulang', allowOutsideClick: false })
                 .then(() => { eksekusiSubmit(); });
