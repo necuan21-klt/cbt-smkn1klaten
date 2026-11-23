@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - CBT SMKN 1 Klaten</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+    .hidden { display: none !important; }
+    .loader { border: 4px solid #f3f4f6; border-top: 4px solid #8b5cf6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <div id="loading-overlay" class="hidden fixed inset-0 z-50 bg-white/80 backdrop-blur-sm flex flex-col items-center justify-center">
+    <div class="loader mb-3"></div><div class="text-sm font-bold text-slate-700">Memproses...</div>
+  </div>
+
+  <!-- LOGIN ADMIN -->
+  <div id="view-login" class="flex-1 flex items-center justify-center p-4 bg-slate-900 h-screen">
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden">
+      <div class="p-8 bg-purple-600 text-white text-center"><i data-lucide="shield" class="w-12 h-12 mx-auto mb-3"></i><h1 class="text-2xl font-bold">PORTAL ADMIN</h1></div>
+      <div class="p-8 space-y-5">
+        <input id="login-username" type="text" placeholder="Username" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-purple-600 outline-none">
+        <input id="login-password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') loginAdmin()" class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-purple-600 outline-none">
+        <button onclick="loginAdmin()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 rounded-xl">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD ADMIN -->
+  <div id="view-admin" class="hidden flex-1 flex h-screen overflow-hidden">
+    <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col shrink-0">
+      <div class="p-5 border-b border-slate-800 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-500 flex items-center justify-center text-white font-bold">AD</div>
+        <div><div class="text-white font-bold text-sm">ADMINISTRATOR</div><div class="text-xs">CBT PRO</div></div>
+      </div>
+      <button onclick="logoutAdmin()" class="mt-auto m-5 bg-slate-800 hover:bg-red-600 text-slate-300 hover:text-white py-3 rounded-xl text-sm font-bold transition">Keluar Akun</button>
+    </aside>
+
+    <main class="flex-1 flex flex-col bg-slate-50">
+      <header class="bg-white px-8 py-5 border-b flex justify-between items-center shrink-0">
+        <h2 class="font-bold text-xl text-slate-800">Manajemen Pengguna</h2>
+      </header>
+      <div class="flex-1 p-8 overflow-y-auto max-w-5xl mx-auto w-full space-y-6">
+        
+        <!-- INPUT USER BARU -->
+        <div class="bg-white rounded-2xl border shadow-sm p-6 flex items-end gap-4">
+          <div class="w-1/5"><label class="text-xs font-bold block mb-1">Peran</label>
+            <select id="form-role" class="w-full border-2 p-3 rounded-xl text-sm"><option value="Siswa">Siswa</option><option value="Guru">Guru</option></select>
+          </div>
+          <div class="w-1/5"><label class="text-xs font-bold block mb-1">Username (NIS)</label><input id="form-u" class="w-full border-2 p-3 rounded-xl text-sm"></div>
+          <div class="w-1/5"><label class="text-xs font-bold block mb-1">Password</label><input id="form-p" type="text" class="w-full border-2 p-3 rounded-xl text-sm"></div>
+          <div class="w-1/5"><label class="text-xs font-bold block mb-1">Nama Lengkap</label><input id="form-n" class="w-full border-2 p-3 rounded-xl text-sm"></div>
+          <div class="w-1/5"><label class="text-xs font-bold block mb-1">Kelas (Cth: XII DKV 1)</label><input id="form-k" class="w-full border-2 p-3 rounded-xl text-sm"></div>
+          <button onclick="addUser()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3.5 px-6 rounded-xl">Simpan</button>
+        </div>
+
+        <div class="bg-white rounded-2xl border shadow-sm overflow-hidden">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 border-b text-slate-500 text-xs uppercase"><th class="p-4">Peran</th><th class="p-4">Username</th><th class="p-4">Nama Lengkap</th><th class="p-4">Kelas</th><th class="p-4 text-right">Aksi</th></thead>
+            <tbody id="tabel-user" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
+    lucide.createIcons();
+
+    function showLoading() { document.getElementById('loading-overlay').classList.remove('hidden'); }
+    function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
+
+    function callAPI(action, payload, callback) {
+      showLoading();
+      fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload }) })
+      .then(r => r.json()).then(res => { hideLoading(); if(callback) callback(res); })
+      .catch(() => { hideLoading(); Swal.fire('Error', 'Gagal koneksi ke server', 'error'); });
+    }
+
+    function loginAdmin() {
+      const u = document.getElementById('login-username').value, p = document.getElementById('login-password').value;
+      if (!u || !p) return;
+      callAPI('login', { u, p, role: 'Admin' }, res => {
+        if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
+        document.getElementById('view-login').classList.add('hidden');
+        document.getElementById('view-admin').classList.remove('hidden');
+        refreshData();
+      });
+    }
+
+    function logoutAdmin() { location.reload(); }
+
+    function refreshData() {
+      callAPI('getAdminData', {}, data => {
+        const all = [...data.guru, ...data.siswa];
+        document.getElementById('tabel-user').innerHTML = all.map(x => 
+          `<tr><td class="p-4 font-bold text-purple-600">${x['Peran']}</td><td class="p-4">${x['Username']}</td><td class="p-4">${x['Nama Lengkap']}</td><td class="p-4">${x['Kelas']}</td><td class="p-4 text-right"><button onclick="deleteUser('${x['ID']}')" class="text-red-600 font-bold bg-red-50 px-3 py-1 rounded-lg">Hapus</button></td></tr>`
+        ).join('');
+      });
+    }
+
+    function addUser() {
+      const u = document.getElementById('form-u').value, p = document.getElementById('form-p').value, nama = document.getElementById('form-n').value, role = document.getElementById('form-role').value, kelas = document.getElementById('form-k').value;
+      if(!u || !p || !nama) return Swal.fire('Perhatian', 'Isi data dengan lengkap', 'warning');
+      callAPI('addUser', { u, p, nama, role, kelas }, res => {
+        if(!res.success) return Swal.fire('Gagal', res.msg, 'error');
+        Swal.fire('Tersimpan', '', 'success');
+        ['u','p','n','k'].forEach(id => document.getElementById('form-'+id).value = '');
+        refreshData();
+      });
+    }
+
+    function deleteUser(id) {
+      if(confirm('Hapus pengguna ini?')) callAPI('deleteUser', { id }, () => refreshData());
+    }
+  </script>
+</body>
+</html>
