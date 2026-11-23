@@ -180,7 +180,7 @@
               <div class="relative col-span-2"><span class="absolute left-3 top-3 text-xs font-black text-slate-400">E</span><input id="form-e" class="w-full pl-8 pr-3 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:border-teal-500 focus:bg-white outline-none transition-all"></div>
             </div>
             <div class="flex gap-4 items-end">
-              <div class="w-1/4"><label class="block text-xs font-bold text-slate-600 mb-2">Kunci</label><select id="form-kunci" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black focus:border-teal-500 focus:bg-white outline-none transition-all"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
+              <div class="w-1/4"><label class="block text-xs font-bold text-slate-600 mb-2">Kunci Jawaban</label><select id="form-kunci" class="w-full px-4 py-3.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black focus:border-teal-500 focus:bg-white outline-none transition-all"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></div>
               <button onclick="simpanSoal()" class="w-3/4 bg-teal-600 hover:bg-teal-500 active:scale-[0.98] text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-teal-600/20">Simpan Soal ke Bank</button>
             </div>
           </div>
@@ -209,9 +209,9 @@
                   <option value="SEMUA">Semua Mapel</option>
                 </select>
                 
-                <!-- Tombol Hapus Semua -->
+                <!-- Tombol Hapus Semua (Popup Cerdas) -->
                 <button onclick="hapusSemuaSoal()" class="text-xs text-red-600 bg-red-50 border border-red-100 hover:bg-red-500 hover:text-white px-5 py-2.5 rounded-full font-bold transition-all flex items-center gap-2 whitespace-nowrap shadow-sm active:scale-95 w-full sm:w-auto justify-center">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i> Hapus Semua
+                  <i data-lucide="trash-2" class="w-4 h-4"></i> Hapus Masal
                 </button>
               </div>
             </div>
@@ -325,7 +325,6 @@
       const select = document.getElementById('filter-mapel');
       const currentVal = select.value;
       select.innerHTML = `<option value="SEMUA">Semua Mapel</option>` + mapels.map(m => `<option value="${m}">${m}</option>`).join('');
-      // Kembalikan ke pilihan sebelumnya jika masih ada, jika tidak kembali ke SEMUA
       if (mapels.includes(currentVal)) select.value = currentVal;
     }
 
@@ -419,11 +418,41 @@
     }
 
     function hapusSemuaSoal() {
+      const mapels = [...new Set(cacheSoal.map(s => s.mapel))].filter(Boolean);
+      
+      if (mapels.length === 0) return Swal.fire('Info', 'Bank soal saat ini sudah kosong.', 'info');
+
+      let optionsHtml = `<option value="SEMUA" class="font-bold text-red-600">⚠ HAPUS SEMUA MAPEL (TOTAL KOSONG)</option>`;
+      mapels.forEach(m => {
+        optionsHtml += `<option value="${m}" class="text-slate-700 font-semibold">Hapus khusus mapel: ${m}</option>`;
+      });
+
       Swal.fire({
-        title: 'KOSONGKAN BANK SOAL?', text: 'Seluruh soal di database akan dihapus permanen. Aksi ini tidak dapat dibatalkan!', icon: 'warning',
-        showCancelButton: true, confirmButtonColor: '#dc2626', confirmButtonText: 'Ya, Hapus Semua', cancelButtonText: 'Batal', reverseButtons: true
+        title: 'Hapus Soal Masal',
+        html: `
+          <div class="text-left text-sm mt-3">
+            <label class="block font-bold text-slate-600 mb-2">Pilih Target Penghapusan:</label>
+            <select id="hapus-target" class="w-full border border-red-200 focus:border-red-500 rounded-xl px-4 py-3 outline-none text-slate-800 font-bold bg-red-50 shadow-inner">
+              ${optionsHtml}
+            </select>
+            <div class="mt-4 p-3 bg-red-100/50 rounded-lg flex items-start gap-2 border border-red-100">
+               <i data-lucide="alert-triangle" class="w-4 h-4 text-red-500 shrink-0 mt-0.5"></i>
+               <p class="text-xs text-red-600 font-medium leading-relaxed">Pastikan pilihan Anda benar. Soal yang dihapus akan hilang secara permanen dari database Google Sheets.</p>
+            </div>
+          </div>
+        `,
+        showCancelButton: true, confirmButtonColor: '#dc2626', cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'Ya, Eksekusi Hapus', cancelButtonText: 'Batal',
+        didOpen: () => { lucide.createIcons(); },
+        preConfirm: () => { return document.getElementById('hapus-target').value; }
       }).then(res => {
-        if (res.isConfirmed) callAPI('hapusSemuaSoal', {}, () => refreshData());
+        if (res.isConfirmed) {
+          const targetMapel = res.value;
+          callAPI('hapusSemuaSoal', { mapel: targetMapel }, (out) => {
+            if (out.success) { Swal.fire('Berhasil', out.msg, 'success'); refreshData(); }
+            else Swal.fire('Gagal', out.msg, 'error');
+          });
+        }
       });
     }
 
