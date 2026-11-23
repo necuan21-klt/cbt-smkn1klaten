@@ -9,26 +9,21 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; margin: 0; user-select: none; -webkit-user-select: none; overflow-x: hidden; }
+    /* h-[100dvh] sangat penting untuk mengatasi bug address bar di Mobile Browser */
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; margin: 0; user-select: none; -webkit-user-select: none; height: 100dvh; overflow: hidden; }
     .hidden { display: none !important; }
     
-    /* Animasi Loading Spinner Besar */
     .loader { border: 4px solid #f3f4f6; border-top: 4px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
-    
-    /* Animasi Spinner Kecil untuk Tombol */
     .loader-sm { border: 2px solid rgba(255,255,255,0.3); border-top: 2px solid #ffffff; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; }
     
-    /* Custom Scrollbar untuk Grid Navigasi */
     .custom-scroll::-webkit-scrollbar { width: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: transparent; }
     .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-    /* Glass Card untuk Login */
     .glass-login { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); }
   </style>
 </head>
-<body class="min-h-screen flex flex-col" oncontextmenu="return false;">
+<body class="flex flex-col" oncontextmenu="return false;">
 
   <!-- LOADING OVERLAY UTAMA -->
   <div id="loading-overlay" class="hidden fixed inset-0 z-50 bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center">
@@ -37,13 +32,11 @@
 
   <!-- VIEW 0: LOGIN SISWA (NATIVE iOS STYLE) -->
   <div id="view-login" class="flex-1 flex items-center justify-center p-5 bg-slate-900 relative overflow-hidden">
-    <!-- Ambient Background Blobs -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
       <div class="absolute -top-24 -left-24 w-80 h-80 bg-blue-600/30 rounded-full blur-[80px]"></div>
       <div class="absolute bottom-10 -right-10 w-64 h-64 bg-teal-500/20 rounded-full blur-[60px]"></div>
     </div>
 
-    <!-- Login Card -->
     <div class="glass-login rounded-[2.5rem] shadow-2xl w-full max-w-sm overflow-hidden z-10 flex flex-col">
       <div class="p-10 pb-6 text-center flex flex-col items-center">
         <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-blue-500/30 ring-1 ring-white/20">
@@ -54,30 +47,27 @@
       </div>
       
       <div class="p-8 pt-2 space-y-4">
-        <!-- Input NIS -->
         <div class="relative group">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-400 text-slate-400">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="user" class="w-5 h-5"></i>
           </div>
-          <input id="login-username" type="text" placeholder="NIS / Username" class="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-[1.2rem] focus:bg-white/10 focus:border-blue-400/50 focus:ring-4 focus:ring-blue-500/10 outline-none text-white placeholder-slate-400 font-medium transition-all">
+          <input id="login-username" type="text" placeholder="NIS / Username" class="w-full pl-12 pr-4 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:bg-white/10 focus:border-blue-400/50 outline-none text-white placeholder-slate-400 font-medium">
         </div>
         
-        <!-- Input Password -->
         <div class="relative group">
-          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-blue-400 text-slate-400">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
             <i data-lucide="lock" class="w-5 h-5"></i>
           </div>
-          <input id="login-password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') loginSiswa()" class="w-full pl-12 pr-12 py-4 bg-white/5 border border-white/10 rounded-[1.2rem] focus:bg-white/10 focus:border-blue-400/50 focus:ring-4 focus:ring-blue-500/10 outline-none text-white placeholder-slate-400 font-medium transition-all">
+          <input id="login-password" type="password" placeholder="Password" onkeydown="if(event.key==='Enter') loginSiswa()" class="w-full pl-12 pr-12 py-3.5 bg-white/5 border border-white/10 rounded-2xl focus:bg-white/10 focus:border-blue-400/50 outline-none text-white placeholder-slate-400 font-medium">
           <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white transition-colors active:scale-90">
             <div id="icon-eye-off"><i data-lucide="eye-off" class="w-5 h-5"></i></div>
             <div id="icon-eye" class="hidden text-blue-400"><i data-lucide="eye" class="w-5 h-5"></i></div>
           </button>
         </div>
         
-        <!-- Login Button -->
-        <button id="btn-login" onclick="loginSiswa()" class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 active:scale-[0.97] text-white font-bold py-4 rounded-[1.2rem] transition-all shadow-lg shadow-blue-900/50 mt-4 flex items-center justify-center gap-2">
+        <button id="btn-login" onclick="loginSiswa()" class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 active:scale-[0.97] text-white font-bold py-3.5 rounded-2xl transition-all shadow-lg shadow-blue-900/50 mt-4 flex items-center justify-center gap-2">
           <span id="btn-login-text">Masuk</span>
-          <i id="btn-login-icon" data-lucide="arrow-right" class="w-5 h-5"></i>
+          <i id="btn-login-icon" data-lucide="arrow-right" class="w-4 h-4"></i>
           <div id="btn-login-spinner" class="hidden loader-sm"></div>
         </button>
       </div>
@@ -85,10 +75,9 @@
   </div>
 
   <!-- VIEW 1: LOBBY (INPUT TOKEN) -->
-  <div id="view-lobby" class="hidden flex-1 flex items-center justify-center p-5 bg-gradient-to-br from-slate-50 to-slate-100">
+  <div id="view-lobby" class="hidden flex-1 flex items-center justify-center p-5 bg-gradient-to-br from-slate-50 to-slate-100 overflow-y-auto">
     <div class="bg-white rounded-[2rem] shadow-2xl shadow-slate-200/50 w-full max-w-sm p-8 space-y-6 text-center border border-slate-100 relative overflow-hidden">
       <div class="absolute -top-16 -right-16 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl"></div>
-      
       <div class="relative z-10">
         <div class="w-16 h-16 bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mx-auto shadow-inner border border-blue-100 mb-4">
           <i data-lucide="fingerprint" class="w-8 h-8"></i>
@@ -99,98 +88,95 @@
           <span class="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider" id="lobby-username">NIS</span>
         </div>
       </div>
-      
       <div class="bg-red-50 border border-red-100 p-4 rounded-2xl text-left text-xs text-red-800 space-y-1.5 shadow-sm relative z-10">
         <strong class="block mb-2 text-sm flex items-center gap-1.5 text-red-600"><i data-lucide="shield-alert" class="w-4 h-4"></i> Proteksi Anti-Cheat</strong>
-        <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Sistem mengunci layar secara penuh.</p>
-        <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Dilarang berpindah aplikasi (WA, Google).</p>
+        <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Layar akan dikunci penuh.</p>
+        <p class="flex items-start gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 shrink-0 text-red-400"></i> Dilarang pindah aplikasi/layar.</p>
       </div>
-      
       <div class="pt-2 relative z-10">
-        <input id="input-token" type="text" placeholder="KETIK TOKEN UJIAN" class="w-full px-4 py-4 text-center text-xl font-mono font-black uppercase tracking-[0.3em] border-2 border-slate-200 rounded-[1.2rem] focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 outline-none transition-all placeholder:font-sans placeholder:font-semibold placeholder:tracking-normal placeholder:text-sm">
+        <input id="input-token" type="text" placeholder="KETIK TOKEN UJIAN" class="w-full px-4 py-4 text-center text-xl font-mono font-black uppercase tracking-[0.3em] border-2 border-slate-200 rounded-2xl focus:border-blue-600 outline-none">
       </div>
-      <button onclick="mulaiUjian()" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-4 rounded-[1.2rem] transition-all shadow-lg shadow-slate-900/20 flex items-center justify-center gap-2 relative z-10">
+      <button onclick="mulaiUjian()" class="w-full bg-slate-900 hover:bg-slate-800 active:scale-95 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 relative z-10">
         Mulai Kerjakan <i data-lucide="play-circle" class="w-5 h-5"></i>
       </button>
-      
       <div class="pt-2 border-t border-slate-100 relative z-10">
-        <button onclick="keluarSistem()" class="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors py-2 px-4">Bukan Anda? Ganti Akun</button>
+        <button onclick="keluarSistem()" class="text-xs font-bold text-slate-400 hover:text-red-500 py-2">Bukan Anda? Ganti Akun</button>
       </div>
     </div>
   </div>
 
   <!-- VIEW 2: RUANG UJIAN UTAMA -->
-  <div id="view-ujian" class="hidden flex-1 flex flex-col h-screen overflow-hidden bg-[#f1f5f9]">
+  <!-- Strukturnya Strict Flex Col: Header (Shrink-0) -> Main (Flex-1, Scroll) -> Bottom Bar (Shrink-0) -->
+  <div id="view-ujian" class="hidden flex-1 flex flex-col h-full bg-[#f1f5f9]">
     
-    <!-- HEADER MODERN -->
-    <header class="bg-white/80 backdrop-blur-xl px-4 py-3 flex justify-between items-center shrink-0 border-b border-slate-200 shadow-sm z-30 sticky top-0">
+    <!-- HEADER MODERN (TERKUNCI DI ATAS) -->
+    <header class="shrink-0 bg-white/90 backdrop-blur-xl px-4 py-3 flex justify-between items-center border-b border-slate-200 shadow-sm z-30">
       <div class="flex items-center gap-3 w-1/2">
-        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 shadow-md shadow-blue-500/20 relative">
-          <i data-lucide="user" class="w-5 h-5"></i>
-          <div class="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full"></div>
+        <div class="w-9 h-9 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white shrink-0 shadow-md relative">
+          <i data-lucide="user" class="w-4 h-4"></i>
+          <div class="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-400 border-2 border-white rounded-full"></div>
         </div>
         <div class="flex flex-col min-w-0">
-          <span class="font-bold text-[13px] text-slate-800 truncate" id="header-nama">Nama Siswa</span>
-          <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wide truncate" id="header-mapel">Mata Pelajaran</span>
+          <span class="font-bold text-[12px] text-slate-800 truncate" id="header-nama">Nama Siswa</span>
+          <span class="text-[9px] font-bold text-slate-500 uppercase tracking-wide truncate" id="header-mapel">Mata Pelajaran</span>
         </div>
       </div>
       
       <div class="flex items-center gap-2 shrink-0">
-        <div class="bg-red-50 px-2.5 py-1.5 rounded-lg text-[10px] font-bold text-red-600 border border-red-100 flex items-center gap-1 shadow-sm">
+        <div class="bg-red-50 px-2 py-1 rounded-lg text-[10px] font-bold text-red-600 border border-red-100 flex items-center gap-1 shadow-sm">
           <i data-lucide="alert-triangle" class="w-3 h-3"></i> <span id="ui-pelanggaran">0/3</span>
         </div>
-        <div class="bg-slate-900 px-3 py-1.5 rounded-lg font-mono font-bold text-emerald-400 text-sm flex items-center gap-1.5 shadow-md">
-          <i data-lucide="clock" class="w-3.5 h-3.5 text-slate-400"></i> <span id="ui-waktu">00:00</span>
+        <div class="bg-slate-900 px-2.5 py-1.5 rounded-lg font-mono font-bold text-emerald-400 text-xs flex items-center gap-1.5 shadow-md">
+          <i data-lucide="clock" class="w-3 h-3 text-slate-400"></i> <span id="ui-waktu">00:00</span>
         </div>
       </div>
     </header>
 
-    <!-- AREA SOAL -->
-    <main class="flex-1 overflow-y-auto p-4 pb-32 relative">
-      <div class="bg-white/80 backdrop-blur-md rounded-[1.5rem] p-6 shadow-sm border border-slate-200/60 max-w-3xl mx-auto min-h-[60vh] flex flex-col relative overflow-hidden">
+    <!-- AREA SOAL (BISA DI-SCROLL, TERPISAH DARI TOMBOL) -->
+    <main class="flex-1 overflow-y-auto custom-scroll p-4 pb-8">
+      <div class="bg-white rounded-3xl p-5 shadow-sm border border-slate-200/80 max-w-3xl mx-auto flex flex-col relative overflow-hidden min-h-full">
         
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+        <div class="flex justify-between items-center mb-5 pb-4 border-b border-slate-100">
           <div class="flex gap-2">
-            <span class="bg-slate-100 border border-slate-200 text-blue-600 font-bold px-4 py-1.5 rounded-xl text-xs tracking-wide shadow-sm flex items-center gap-1.5" id="ui-nosoal">
+            <span class="bg-slate-100 border border-slate-200 text-blue-600 font-bold px-3.5 py-1.5 rounded-xl text-[11px] tracking-wide flex items-center gap-1.5" id="ui-nosoal">
               SOAL 1
             </span>
-            <span id="ui-status-ragu" class="hidden bg-amber-100 border border-amber-200 text-amber-700 font-bold px-3 py-1.5 rounded-xl text-xs tracking-wide shadow-sm flex items-center gap-1.5">
+            <span id="ui-status-ragu" class="hidden bg-amber-100 border border-amber-200 text-amber-700 font-bold px-3 py-1.5 rounded-xl text-[11px] tracking-wide flex items-center gap-1">
                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Ragu
             </span>
           </div>
-          
-          <button onclick="bukaGrid()" class="text-xs font-bold text-slate-600 bg-white border border-slate-200 px-4 py-1.5 rounded-xl flex items-center gap-2 active:bg-slate-100 transition-colors shadow-sm active:scale-95">
-            <i data-lucide="layout-grid" class="w-4 h-4 text-blue-500"></i> Daftar Soal
+          <button onclick="bukaGrid()" class="text-[11px] font-bold text-slate-600 bg-white border border-slate-200 px-3.5 py-1.5 rounded-xl flex items-center gap-1.5 active:bg-slate-100 shadow-sm active:scale-95">
+            <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-blue-500"></i> Daftar Soal
           </button>
         </div>
         
-        <div id="ui-pertanyaan" class="text-slate-800 text-[15px] sm:text-base leading-relaxed font-medium mb-8"></div>
-        <div id="ui-opsi" class="space-y-3 mt-auto"></div>
+        <div id="ui-pertanyaan" class="text-slate-800 text-[14px] sm:text-[15px] leading-relaxed font-medium mb-6"></div>
+        <div id="ui-opsi" class="space-y-2.5 mt-auto"></div>
       </div>
     </main>
 
-    <!-- BOTTOM ACTION BAR -->
-    <div class="absolute bottom-0 left-0 w-full bg-white/80 backdrop-blur-xl border-t border-slate-200 p-4 shadow-[0_-10px_25px_-5px_rgba(0,0,0,0.05)] z-20">
-      <div class="flex justify-between items-center gap-3 max-w-3xl mx-auto">
+    <!-- BOTTOM ACTION BAR (TERKUNCI DI BAWAH, UKURAN DIPERKECIL) -->
+    <div class="shrink-0 bg-white/90 backdrop-blur-xl border-t border-slate-200 p-3 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)] z-30">
+      <div class="flex justify-between items-center gap-2 max-w-3xl mx-auto">
         
         <!-- Tombol Kiri (Kembali - BIRU) -->
-        <button onclick="navSoal(-1)" id="btn-prev" class="flex-1 py-4 bg-blue-600 rounded-[1.2rem] text-sm font-bold text-white active:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-1.5 transition-all shadow-lg shadow-blue-600/20 disabled:opacity-40 disabled:active:scale-100">
-          <i data-lucide="chevron-left" class="w-5 h-5"></i> <span class="hidden sm:inline">Sebelumnya</span>
+        <button onclick="navSoal(-1)" id="btn-prev" class="flex-1 py-3 bg-blue-600 rounded-xl text-xs font-bold text-white active:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-1 transition-all shadow-md shadow-blue-600/20 disabled:opacity-40 disabled:active:scale-100">
+          <i data-lucide="chevron-left" class="w-4 h-4"></i> <span class="hidden sm:inline">Sebelumnya</span>
         </button>
         
         <!-- Tombol Tengah (Ragu-Ragu - KUNING) -->
-        <button onclick="toggleRagu()" id="btn-ragu" class="flex-1 py-4 bg-amber-400 text-white rounded-[1.2rem] text-sm font-bold active:bg-amber-500 flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-400/30">
-          <div id="icon-ragu-uncheck"><i data-lucide="square" class="w-4 h-4"></i></div>
-          <div id="icon-ragu-check" class="hidden"><i data-lucide="check-square" class="w-4 h-4"></i></div>
+        <button onclick="toggleRagu()" id="btn-ragu" class="flex-1 py-3 bg-amber-400 text-white rounded-xl text-xs font-bold active:bg-amber-500 flex items-center justify-center gap-1.5 transition-all shadow-md shadow-amber-400/30">
+          <div id="icon-ragu-uncheck"><i data-lucide="square" class="w-3.5 h-3.5"></i></div>
+          <div id="icon-ragu-check" class="hidden"><i data-lucide="check-square" class="w-3.5 h-3.5"></i></div>
           <span class="hidden sm:inline">Ragu-Ragu</span>
         </button>
         
         <!-- Tombol Kanan (Selanjutnya - BIRU) -->
-        <button onclick="navSoal(1)" id="btn-next" class="flex-1 py-4 bg-blue-600 rounded-[1.2rem] text-sm font-bold text-white active:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-1.5 transition-all shadow-lg shadow-blue-600/30">
-          <span class="hidden sm:inline">Selanjutnya</span> <i data-lucide="chevron-right" class="w-5 h-5"></i>
+        <button onclick="navSoal(1)" id="btn-next" class="flex-1 py-3 bg-blue-600 rounded-xl text-xs font-bold text-white active:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-1 transition-all shadow-md shadow-blue-600/30">
+          <span class="hidden sm:inline">Selanjutnya</span> <i data-lucide="chevron-right" class="w-4 h-4"></i>
         </button>
-        <button onclick="kumpulUjian(false)" id="btn-finish" class="hidden flex-1 py-4 bg-emerald-500 rounded-[1.2rem] text-sm font-bold text-white active:bg-emerald-600 active:scale-[0.98] flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/30">
-          Kumpulkan <i data-lucide="check-circle" class="w-5 h-5"></i>
+        <button onclick="kumpulUjian(false)" id="btn-finish" class="hidden flex-1 py-3 bg-emerald-500 rounded-xl text-xs font-bold text-white active:bg-emerald-600 active:scale-[0.98] flex items-center justify-center gap-1.5 transition-all shadow-md shadow-emerald-500/30">
+          Kumpulkan <i data-lucide="check-circle" class="w-4 h-4"></i>
         </button>
       </div>
     </div>
@@ -198,26 +184,26 @@
 
   <!-- MODAL BOTTOM SHEET: GRID SOAL -->
   <div id="modal-grid" class="hidden fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex flex-col justify-end transition-opacity">
-    <div class="bg-white w-full max-w-2xl mx-auto rounded-t-[2rem] p-6 pb-10 shadow-2xl flex flex-col max-h-[85vh] relative animate-[slideUp_0.3s_ease-out]">
+    <div class="bg-white w-full max-w-2xl mx-auto rounded-t-[2rem] p-5 pb-8 shadow-2xl flex flex-col max-h-[85vh] relative animate-[slideUp_0.3s_ease-out]">
       <!-- Pull Bar Indicator -->
-      <div class="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-200 rounded-full"></div>
+      <div class="absolute top-3 left-1/2 -translate-x-1/2 w-10 h-1.5 bg-slate-200 rounded-full"></div>
       
-      <div class="flex justify-between items-center mb-6 mt-4 shrink-0">
+      <div class="flex justify-between items-center mb-5 mt-3 shrink-0">
         <div>
-          <h3 class="font-extrabold text-xl text-slate-800 tracking-tight">Navigasi Soal</h3>
-          <p class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider" id="grid-status-text">Terjawab: 0 / 0</p>
+          <h3 class="font-extrabold text-lg text-slate-800 tracking-tight">Navigasi Soal</h3>
+          <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-wider" id="grid-status-text">Terjawab: 0 / 0</p>
         </div>
-        <button onclick="tutupGrid()" class="bg-slate-100 p-3 rounded-full active:bg-slate-200 active:scale-95 text-slate-500 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
+        <button onclick="tutupGrid()" class="bg-slate-100 p-2.5 rounded-full active:bg-slate-200 active:scale-95 text-slate-500 transition-all"><i data-lucide="x" class="w-5 h-5"></i></button>
       </div>
       
-      <div class="flex gap-4 mb-6 text-[10px] font-bold text-slate-500 uppercase tracking-wide shrink-0 bg-slate-50 p-4 rounded-2xl border border-slate-100">
-        <div class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-white border-2 border-slate-300 rounded-md shadow-sm"></div> Kosong</div>
-        <div class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-blue-500 rounded-md shadow-sm"></div> Terjawab</div>
-        <div class="flex items-center gap-2"><div class="w-3.5 h-3.5 bg-amber-400 rounded-md shadow-sm"></div> Ragu-Ragu</div>
+      <div class="flex gap-3 mb-5 text-[9px] font-bold text-slate-500 uppercase tracking-wide shrink-0 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+        <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-white border-2 border-slate-300 rounded-md"></div> Kosong</div>
+        <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-blue-500 rounded-md"></div> Terjawab</div>
+        <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-amber-400 rounded-md"></div> Ragu-Ragu</div>
       </div>
       
       <div class="overflow-y-auto custom-scroll p-1 flex-1">
-        <div id="ui-grid" class="grid grid-cols-5 sm:grid-cols-7 gap-3 sm:gap-4"></div>
+        <div id="ui-grid" class="grid grid-cols-5 sm:grid-cols-7 gap-3"></div>
       </div>
     </div>
   </div>
@@ -235,76 +221,48 @@
 
     lucide.createIcons();
 
-    // Toggle Password Visibility
     function togglePassword() {
       const input = document.getElementById('login-password');
       const eyeOff = document.getElementById('icon-eye-off');
       const eyeOn = document.getElementById('icon-eye');
       if (input.type === 'password') {
-          input.type = 'text';
-          eyeOff.classList.add('hidden');
-          eyeOn.classList.remove('hidden');
+          input.type = 'text'; eyeOff.classList.add('hidden'); eyeOn.classList.remove('hidden');
       } else {
-          input.type = 'password';
-          eyeOn.classList.add('hidden');
-          eyeOff.classList.remove('hidden');
+          input.type = 'password'; eyeOn.classList.add('hidden'); eyeOff.classList.remove('hidden');
       }
     }
 
-    // UI Loading Native-style untuk Tombol Login
     function setBtnLoading(isLoading) {
-      const btnText = document.getElementById('btn-login-text');
-      const btnIcon = document.getElementById('btn-login-icon');
-      const btnSpin = document.getElementById('btn-login-spinner');
-      const btn = document.getElementById('btn-login');
-      
+      const btnText = document.getElementById('btn-login-text'), btnIcon = document.getElementById('btn-login-icon');
+      const btnSpin = document.getElementById('btn-login-spinner'), btn = document.getElementById('btn-login');
       if(isLoading) {
-          btnText.classList.add('hidden');
-          btnIcon.classList.add('hidden');
-          btnSpin.classList.remove('hidden');
-          btn.disabled = true;
-          btn.classList.add('opacity-80');
+          btnText.classList.add('hidden'); btnIcon.classList.add('hidden');
+          btnSpin.classList.remove('hidden'); btn.disabled = true; btn.classList.add('opacity-80');
       } else {
-          btnText.classList.remove('hidden');
-          btnIcon.classList.remove('hidden');
-          btnSpin.classList.add('hidden');
-          btn.disabled = false;
-          btn.classList.remove('opacity-80');
+          btnText.classList.remove('hidden'); btnIcon.classList.remove('hidden');
+          btnSpin.classList.add('hidden'); btn.disabled = false; btn.classList.remove('opacity-80');
       }
     }
 
-    // Modal Loading Biasa
     function showLoading(text = "Memproses Data...") { 
-      document.getElementById('loading-text').innerText = text;
-      document.getElementById('loading-overlay').classList.remove('hidden'); 
+      document.getElementById('loading-text').innerText = text; document.getElementById('loading-overlay').classList.remove('hidden'); 
     }
     function hideLoading() { document.getElementById('loading-overlay').classList.add('hidden'); }
 
-    // --- INIT & SESSION CEK ---
     window.addEventListener('DOMContentLoaded', () => {
       const savedSesi = localStorage.getItem('cbt_sesi');
       if (savedSesi) {
         try {
           const data = JSON.parse(savedSesi);
-          user = data.user;
-          sesi = data.sesi;
-          soalList = data.soalList;
-          jawaban = data.jawaban || {};
-          listRagu = data.listRagu || {};
-          curIdx = data.curIdx || 0;
-          
+          user = data.user; sesi = data.sesi; soalList = data.soalList;
+          jawaban = data.jawaban || {}; listRagu = data.listRagu || {}; curIdx = data.curIdx || 0;
           const waktuBerjalan = Math.floor((Date.now() - data.lastSaveTime) / 1000);
-          sisaDetik = data.sisaDetik - waktuBerjalan;
-          pelanggaran = data.pelanggaran || 0;
+          sisaDetik = data.sisaDetik - waktuBerjalan; pelanggaran = data.pelanggaran || 0;
 
-          if (sisaDetik > 0) {
-            setupUIUjian();
-          } else {
-            kumpulUjian(true); 
-          }
+          if (sisaDetik > 0) setupUIUjian();
+          else kumpulUjian(true); 
         } catch (e) {
-          localStorage.removeItem('cbt_sesi');
-          cekOtentikasiAwal();
+          localStorage.removeItem('cbt_sesi'); cekOtentikasiAwal();
         }
       } else {
         cekOtentikasiAwal();
@@ -314,8 +272,7 @@
     function cekOtentikasiAwal() {
       const loggedUser = sessionStorage.getItem('cbt_user');
       if (loggedUser) {
-        user = JSON.parse(loggedUser);
-        tampilkanLobby();
+        user = JSON.parse(loggedUser); tampilkanLobby();
       } else {
         document.getElementById('view-login').classList.remove('hidden');
         document.getElementById('view-lobby').classList.add('hidden');
@@ -346,42 +303,38 @@
       document.getElementById('view-ujian').classList.add('hidden');
     }
 
-    // --- KONEKSI API ---
     function callAPI(action, payload, callback) {
-      if(action === 'login') { setBtnLoading(true); } else { showLoading(); }
+      if(action === 'login') setBtnLoading(true); else showLoading();
       
       let finalPayload = { ...payload };
       if (user && user.username && action !== 'login') finalPayload.u = user.username;
       
       fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload: finalPayload }) })
-      .then(r => r.json())
-      .then(res => { 
-          if(action === 'login') { setBtnLoading(false); } else { hideLoading(); }
+      .then(r => r.json()).then(res => { 
+          if(action === 'login') setBtnLoading(false); else hideLoading();
           callback(res); 
       })
       .catch(() => { 
-          if(action === 'login') { setBtnLoading(false); } else { hideLoading(); }
-          Swal.fire('Error', 'Gagal koneksi ke server pusat. Periksa koneksi internet.', 'error'); 
+          if(action === 'login') setBtnLoading(false); else hideLoading();
+          Swal.fire('Error', 'Gagal koneksi ke server.', 'error'); 
       });
     }
 
     function loginSiswa() {
       const u = document.getElementById('login-username').value.trim();
       const p = document.getElementById('login-password').value.trim();
-      if (!u || !p) return Swal.fire('Perhatian', 'Harap isi NIS dan Password!', 'warning');
+      if (!u || !p) return Swal.fire('Perhatian', 'Isi NIS dan Password!', 'warning');
       
       callAPI('login', { u: u, p: p, role: 'Siswa' }, res => {
         if (!res.success) return Swal.fire('Gagal', res.msg, 'error');
-        user = res.data;
-        sessionStorage.setItem('cbt_user', JSON.stringify(user));
+        user = res.data; sessionStorage.setItem('cbt_user', JSON.stringify(user));
         tampilkanLobby();
       });
     }
 
-    // --- ALUR MULAI UJIAN ---
     function mulaiUjian() {
       const token = document.getElementById('input-token').value.trim();
-      if (!token) return Swal.fire('Perhatian', 'Ketik Token Ujian yang diberikan pengawas!', 'warning');
+      if (!token) return Swal.fire('Perhatian', 'Ketik Token Ujian!', 'warning');
       
       callAPI('mulaiUjian', { token: token }, res => {
         if (!res.success) return Swal.fire('Akses Ditolak', res.msg, 'error');
@@ -401,10 +354,7 @@
       document.getElementById('header-nama').innerText = user.nama;
       document.getElementById('header-mapel').innerText = sesi.mapel;
       
-      saveToLocal();
-      renderSoal(); 
-      mulaiTimer(); 
-      pasangAntiCheat();
+      saveToLocal(); renderSoal(); mulaiTimer(); pasangAntiCheat();
     }
 
     function saveToLocal() {
@@ -413,16 +363,14 @@
       localStorage.setItem('cbt_sesi', JSON.stringify(data));
     }
 
-    // --- RENDER UI SOAL ---
     function renderSoal() {
       const s = soalList[curIdx];
-      
-      document.getElementById('ui-nosoal').innerHTML = `SOAL ${curIdx + 1} <span class="text-blue-400/50 px-1">|</span> ${soalList.length}`;
+      document.getElementById('ui-nosoal').innerHTML = `SOAL ${curIdx + 1} <span class="text-slate-300 px-1">|</span> ${soalList.length}`;
       
       let htmlTanya = `<div class="mb-4 text-slate-700">${s.tanya}</div>`;
       if (s.gbrSoal) {
         s.gbrSoal.split(',').forEach(url => { 
-          htmlTanya += `<img src="${url.trim()}" class="w-full sm:max-w-md rounded-[1rem] border border-slate-200 shadow-sm mb-5 object-cover" onclick="window.open(this.src, '_blank')">`; 
+          htmlTanya += `<img src="${url.trim()}" class="w-full sm:max-w-md rounded-2xl border border-slate-200 shadow-sm mb-4 object-cover">`; 
         });
       }
       document.getElementById('ui-pertanyaan').innerHTML = htmlTanya;
@@ -431,19 +379,17 @@
         if (!s['opsi'+opt] && !s['gbr'+opt]) return ''; 
         const isSel = jawaban[s.id] === opt; 
         
-        let htmlOpsi = s['opsi'+opt] ? `<div class="text-[14px] sm:text-[15px] pt-1">${s['opsi'+opt]}</div>` : '';
-        if (s['gbr'+opt]) { 
-          htmlOpsi += `<img src="${s['gbr'+opt].split(',')[0].trim()}" class="w-full max-w-[200px] rounded-[1rem] border border-slate-200 mt-3 shadow-sm" onclick="event.stopPropagation(); window.open(this.src, '_blank')">`; 
-        }
+        let htmlOpsi = s['opsi'+opt] ? `<div class="text-[13px] sm:text-[14px] pt-1">${s['opsi'+opt]}</div>` : '';
+        if (s['gbr'+opt]) { htmlOpsi += `<img src="${s['gbr'+opt].split(',')[0].trim()}" class="w-full max-w-[150px] rounded-xl border border-slate-200 mt-2 shadow-sm">`; }
         
         const styleBox = isSel 
-          ? 'border-blue-500 bg-blue-50/80 shadow-[0_0_0_4px_rgba(59,130,246,0.15)] ring-1 ring-blue-500/50' 
+          ? 'border-blue-500 bg-blue-50/80 shadow-[0_0_0_3px_rgba(59,130,246,0.15)] ring-1 ring-blue-500/50' 
           : 'border-slate-200 bg-white hover:border-slate-300';
           
         const styleBulat = isSel ? 'bg-blue-600 text-white shadow-md shadow-blue-500/40 border-transparent' : 'bg-slate-50 text-slate-500 border border-slate-200';
 
-        return `<div onclick="pilihOpsi('${s.id}', '${opt}')" class="p-4 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex items-start gap-4 active:scale-[0.98] ${styleBox}">
-                  <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 text-sm font-black transition-all ${styleBulat}">${opt}</div>
+        return `<div onclick="pilihOpsi('${s.id}', '${opt}')" class="p-3.5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex items-start gap-3 active:scale-[0.98] ${styleBox}">
+                  <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs font-black transition-all ${styleBulat}">${opt}</div>
                   <div class="flex-1 text-slate-700 font-semibold leading-relaxed">${htmlOpsi}</div>
                 </div>`;
       }).join('');
@@ -461,24 +407,21 @@
     
     function toggleRagu() {
       const id = soalList[curIdx].id;
-      if (listRagu[id]) { delete listRagu[id]; } else { listRagu[id] = true; }
+      if (listRagu[id]) delete listRagu[id]; else listRagu[id] = true;
       saveToLocal(); updateLabelRagu(id);
     }
     
     function updateLabelRagu(id) {
-      const btnRagu = document.getElementById('btn-ragu');
-      const boxStatus = document.getElementById('ui-status-ragu');
+      const btnRagu = document.getElementById('btn-ragu'), boxStatus = document.getElementById('ui-status-ragu');
       if (listRagu[id]) {
         btnRagu.classList.add('bg-amber-400', 'text-white', 'shadow-amber-400/30');
         btnRagu.classList.remove('bg-amber-100', 'text-amber-700', 'border', 'border-amber-200');
-        document.getElementById('icon-ragu-uncheck').classList.add('hidden');
-        document.getElementById('icon-ragu-check').classList.remove('hidden');
+        document.getElementById('icon-ragu-uncheck').classList.add('hidden'); document.getElementById('icon-ragu-check').classList.remove('hidden');
         boxStatus.classList.remove('hidden');
       } else {
         btnRagu.classList.add('bg-amber-100', 'text-amber-700', 'border', 'border-amber-200');
         btnRagu.classList.remove('bg-amber-400', 'text-white', 'shadow-amber-400/30');
-        document.getElementById('icon-ragu-check').classList.add('hidden');
-        document.getElementById('icon-ragu-uncheck').classList.remove('hidden');
+        document.getElementById('icon-ragu-check').classList.add('hidden'); document.getElementById('icon-ragu-uncheck').classList.remove('hidden');
         boxStatus.classList.add('hidden');
       }
     }
@@ -490,28 +433,24 @@
       } 
     }
 
-    // --- MODAL GRID NAVIGASI ---
     function bukaGrid() {
       document.getElementById('modal-grid').classList.remove('hidden');
       let terjawab = 0;
       document.getElementById('ui-grid').innerHTML = soalList.map((s, i) => {
-        const id = s.id;
-        const isJawab = !!jawaban[id];
-        const isRagu = !!listRagu[id];
+        const id = s.id, isJawab = !!jawaban[id], isRagu = !!listRagu[id];
         if (isJawab) terjawab++;
         
         let styleBtn = 'bg-white text-slate-500 border-2 border-slate-200';
-        if (isJawab && !isRagu) { styleBtn = 'bg-blue-500 text-white border-2 border-blue-500 shadow-md shadow-blue-500/30'; } 
-        else if (isRagu) { styleBtn = 'bg-amber-400 text-white border-2 border-amber-400 shadow-md shadow-amber-400/30'; }
+        if (isJawab && !isRagu) styleBtn = 'bg-blue-500 text-white border-2 border-blue-500 shadow-md shadow-blue-500/30'; 
+        else if (isRagu) styleBtn = 'bg-amber-400 text-white border-2 border-amber-400 shadow-md shadow-amber-400/30';
         if (i === curIdx) styleBtn = 'ring-[3px] ring-offset-2 ring-slate-800 ' + styleBtn;
 
-        return `<button onclick="tutupGrid(); curIdx=${i}; renderSoal();" class="aspect-square rounded-[1rem] font-black text-sm transition-all active:scale-90 ${styleBtn}">${i+1}</button>`;
+        return `<button onclick="tutupGrid(); curIdx=${i}; renderSoal();" class="aspect-square rounded-xl font-black text-xs transition-all active:scale-90 ${styleBtn}">${i+1}</button>`;
       }).join('');
       document.getElementById('grid-status-text').innerText = `TERJAWAB: ${terjawab} DARI ${soalList.length}`;
     }
     function tutupGrid() { document.getElementById('modal-grid').classList.add('hidden'); }
 
-    // --- TIMER & PENGIRIMAN ---
     function mulaiTimer() {
       isUjian = true;
       timer = setInterval(() => {
@@ -525,8 +464,7 @@
 
     function kumpulUjian(otomatis) {
       if (!otomatis) {
-          const totalJawab = Object.keys(jawaban).length;
-          const sisaKosong = soalList.length - totalJawab;
+          const sisaKosong = soalList.length - Object.keys(jawaban).length;
           let msg = sisaKosong > 0 ? `<br><b class='text-red-500 mt-2 block'>Perhatian: Masih ada ${sisaKosong} soal kosong!</b>` : '';
           Swal.fire({
               title: 'Akhiri Ujian?', html: `Pastikan semua soal telah dicek kembali.${msg}`, icon: 'question',
@@ -561,7 +499,6 @@
         });
     }
 
-    // --- SENSOR ANTI-CHEAT ---
     function pasangAntiCheat() {
       document.addEventListener('visibilitychange', () => { if (isUjian && document.hidden) catatPelanggaran('Keluar dari halaman aplikasi'); });
       document.addEventListener('fullscreenchange', () => { if (isUjian && !document.fullscreenElement) catatPelanggaran('Keluar dari Layar Penuh'); });
@@ -572,14 +509,12 @@
       if (!isUjian || (Date.now() - lastBlur < 4000)) return; 
       lastBlur = Date.now();
       
-      pelanggaran++; document.getElementById('ui-pelanggaran').innerText = `${pelanggaran}/3`;
-      saveToLocal(); 
+      pelanggaran++; document.getElementById('ui-pelanggaran').innerText = `${pelanggaran}/3`; saveToLocal(); 
       fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'catatPelanggaran', payload: { u: user.username, sesiId: sesi.id, jenis } }) });
       
       if (pelanggaran >= 3) { 
           isUjian = false;
-          Swal.fire({ icon: 'error', title: 'UJIAN DIKUNCI', text: 'Toleransi pelanggaran habis (3x).', allowOutsideClick: false, confirmButtonText: 'Mengerti', confirmButtonColor: '#ef4444' })
-          .then(() => eksekusiSubmit()); 
+          Swal.fire({ icon: 'error', title: 'UJIAN DIKUNCI', text: 'Toleransi pelanggaran habis (3x).', allowOutsideClick: false, confirmButtonText: 'Mengerti', confirmButtonColor: '#ef4444' }).then(() => eksekusiSubmit()); 
       } else { 
           Swal.fire({ icon: 'warning', title: `PERINGATAN ${pelanggaran}/3`, html: `Anda terdeteksi: <b>${jenis}</b>.<br><br>Pelanggaran 3x otomatis ujian dikunci!`, confirmButtonText: 'Kembali Ujian', confirmButtonColor: '#f59e0b', allowOutsideClick: false })
           .then(() => { if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{}); }); 
