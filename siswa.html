@@ -68,7 +68,7 @@
   </div>
 
   <script>
-    // Tanda kutip ganda sudah ditambahkan di bawah ini
+    // Wajib sesuaikan URL API ini dengan Web App milik Anda
     const API_URL = "https://script.google.com/macros/s/AKfycbzFTfvZyEwK9kGtE14VeYgqXn2t6q6V5rput0NvIKryO5CqYCCS4PyEKcCM5qo9E-A/exec";
     
     let user = null, sesi = null, soalList = [], curIdx = 0, jawaban = {}, sisaDetik = 0, timer = null, pelanggaran = 0, isUjian = false, lastBlur = 0;
@@ -79,7 +79,14 @@
 
     function callAPI(action, payload, callback) {
       showLoading();
-      fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload: { ...payload, u: user?.username } }) })
+      
+      // PERBAIKAN: Hanya sisipkan username jika sudah login, dan hindari menimpa payload asli saat login
+      let finalPayload = payload;
+      if (user && user.username) {
+        finalPayload = { u: user.username, ...payload };
+      }
+      
+      fetch(API_URL, { method: 'POST', body: JSON.stringify({ action, payload: finalPayload }) })
       .then(r => r.json()).then(res => { hideLoading(); callback(res); }).catch(() => { hideLoading(); Swal.fire('Error', 'Gagal koneksi server', 'error'); });
     }
 
